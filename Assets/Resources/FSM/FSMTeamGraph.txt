@@ -1,0 +1,32 @@
+{
+  "fsm": [
+    {
+      "condition_name": "IsRoot",
+      "state_name": "FSMTeamIdleState",
+      "states": [
+        {
+          "condition_name": "IsPlaying",
+          "state_name": "FSMTeamDefendState",
+          "states": [
+            {
+              "condition_name": "HaveBall",
+              "state_name": "FSMTeamAttackState",
+              "states": [
+                {
+                  "condition_name": "!HaveBall",
+                  "state_name": "FSMTeamDefendState",
+                  "states": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "condition_name": "IsAnyState",
+      "state_name": "AnyState",
+      "states": []
+    }
+  ]
+}

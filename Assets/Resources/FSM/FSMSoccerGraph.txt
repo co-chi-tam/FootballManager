@@ -1,0 +1,36 @@
+{
+  "fsm": [
+    {
+      "condition_name": "IsRoot",
+      "state_name": "FSMSoccerIdleState",
+      "states": [
+        {
+          "condition_name": "IsTeamAttacking||HaveBall",
+          "state_name": "FSMSoccerAttackState",
+          "states": [
+            {
+              "condition_name": "PassTheBall",
+              "state_name": "FSMSoccerPassBallState",
+              "states": [
+                {
+                  "condition_name": "!HaveBall",
+                  "state_name": "FSMSoccerIdleState",
+                  "states": []
+                }
+              ]
+            },{
+              "condition_name": "!IsTeamAttacking",
+              "state_name": "FSMSoccerIdleState",
+              "states": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "condition_name": "IsAnyState",
+      "state_name": "AnyState",
+      "states": []
+    }
+  ]
+}
