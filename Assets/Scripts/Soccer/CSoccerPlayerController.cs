@@ -16,6 +16,17 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext {
 #endif
 
 	[Header("Control")]
+	[SerializeField]	protected float m_MoveSpeed = 5f;
+	[SerializeField]	protected float m_BallValue = 1f;
+	public float ballValue {
+		get { return this.m_BallValue; }
+		set { this.m_BallValue = value; }
+	}
+	[SerializeField]	protected float m_InteractiveRadius = 3f;
+	public float interactiveRadius {
+		get { return this.m_InteractiveRadius; }
+		set { this.m_InteractiveRadius = value; }
+	}
 	[SerializeField]	protected CPointController m_StartPoint;
 	public CPointController startPoint {
 		get { return this.m_StartPoint; }
@@ -27,11 +38,18 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext {
 		set { this.m_CurrentPoint = value; }
 	}
 	[SerializeField]	protected LayerMask m_TargetLayerMask;
-	[SerializeField]	protected bool m_HaveBall;
-	public bool HaveABall {
-		get { return this.m_HaveBall; }
-		set { this.m_HaveBall = value; }
+	[Header("Ball")]
+	[SerializeField]	protected CBallController m_Ball;
+	public CBallController Ball {
+		get { return this.m_Ball; }
+		set { this.m_Ball = value; }
 	}
+	[SerializeField]	protected GameObject m_BallWorldPosition;
+	public GameObject ballWorldPosition {
+		get { return this.m_BallWorldPosition; }
+		set { this.m_BallWorldPosition = value; }
+	}
+
 	[Header("Team")]
 	[SerializeField]	protected CTeamController m_TeamController;
 	public CTeamController Team {
@@ -55,6 +73,7 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext {
 	{
 		base.Awake ();
 		this.m_NavMeshAgent = this.GetComponent<NavMeshAgent> ();
+		this.m_NavMeshAgent.speed = this.m_MoveSpeed + Random.Range (0, 2f); 
 		this.m_MaxSpeed = this.m_NavMeshAgent.speed;
 
 		this.m_FSMManager = new FSMManager ();
@@ -63,6 +82,8 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext {
 		this.m_FSMManager.RegisterState ("FSMSoccerAttackState", 	new FSMSoccerAttackState(this));
 		this.m_FSMManager.RegisterState ("FSMSoccerDefendState", 	new FSMSoccerDefendState(this));
 		this.m_FSMManager.RegisterState ("FSMSoccerPassBallState", 	new FSMSoccerPassBallState(this));
+		this.m_FSMManager.RegisterState ("FSMSoccerAssistState", 	new FSMSoccerAssistState(this));
+		this.m_FSMManager.RegisterState ("FSMSoccerChaseBallState", new FSMSoccerChaseBallState(this));
 
 		this.m_FSMManager.RegisterCondition ("IsTeamAttacking",		this.IsTeamAttacking);
 		this.m_FSMManager.RegisterCondition ("HaveBall", 			this.HaveBall);
@@ -78,6 +99,13 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext {
 #if UNITY_EDITOR
 		this.m_FSMStateName = this.m_FSMManager.currentStateName;
 #endif
+	}
+
+	protected override void OnDrawGizmos ()
+	{
+		base.OnDrawGizmos ();
+		Gizmos.color = Color.blue;
+		Gizmos.DrawWireSphere (this.GetPosition (), this.m_InteractiveRadius);
 	}
 
 	#endregion
@@ -116,12 +144,12 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext {
 	#region ISoccerContext implementation
 
 	public virtual bool IsTeamAttacking() {
-		return this.Team.IsAttacking();
+		return this.m_TeamController.IsTeamHaveBall();
 	}
 
 	public virtual bool HaveBall ()
 	{
-		return this.m_HaveBall;
+		return this.m_Ball != null;
 	}
 
 	public virtual bool PassTheBall ()

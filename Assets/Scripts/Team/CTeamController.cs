@@ -14,8 +14,21 @@ public class CTeamController : CObjectController, ITeamContext {
 #endif
 
 	[Header("Map")]
-	[SerializeField]	protected GameObject m_AllyGoal;
-	[SerializeField]	protected GameObject m_EnemyGoal;
+	[SerializeField]	protected CBallController m_BallController;
+	public CBallController Ball {
+		get { return this.m_BallController; }
+		set { this.m_BallController = value; }
+	}
+	[SerializeField]	protected CObjectController m_AllyGoal;
+	public CObjectController AllyGoal {
+		get { return this.m_AllyGoal; }
+		set { this.m_AllyGoal = value; }
+	}
+	[SerializeField]	protected CObjectController m_EnemyGoal;
+	public CObjectController EnemyGoal {
+		get { return this.m_EnemyGoal; }
+		set { this.m_EnemyGoal = value; }
+	}
 	[SerializeField]	protected CPointController[] m_StrikerPoints;
 	[SerializeField]	protected CPointController[] m_DefenderPoints;
 	[SerializeField]	protected CPointController[] m_GoalPoints;
@@ -29,7 +42,8 @@ public class CTeamController : CObjectController, ITeamContext {
 	[SerializeField]	protected CSoccerPlayerController[] m_GoalKeeperSoccers;
 
 	[Header("Soccer")]
-	[SerializeField]	protected string m_SoccerPrefabPath;
+	[SerializeField]	protected string m_StrikerPrefabPath;
+	[SerializeField]	protected string m_DefenderPrefabPath;
 
 	protected FSMManager m_FSMManager;
 
@@ -43,11 +57,12 @@ public class CTeamController : CObjectController, ITeamContext {
 		this.m_FSMManager = new FSMManager ();
 
 		this.m_FSMManager.RegisterState ("FSMTeamIdleState", 	new FSMTeamIdleState(this));
+		this.m_FSMManager.RegisterState ("FSMTeamPlayingState", new FSMTeamPlayingState(this));
 		this.m_FSMManager.RegisterState ("FSMTeamAttackState", 	new FSMTeamAttackState(this));
 		this.m_FSMManager.RegisterState ("FSMTeamDefendState", 	new FSMTeamDefendState(this));
 
 		this.m_FSMManager.RegisterCondition ("IsPlaying", 		this.IsPlaying);
-		this.m_FSMManager.RegisterCondition ("HaveBall", 		this.HaveBall);
+		this.m_FSMManager.RegisterCondition ("IsTeamHaveBall",	this.IsTeamHaveBall);
 
 		this.m_FSMManager.LoadFSM (this.m_FSMTextAsset.text);
 	}
@@ -68,8 +83,8 @@ public class CTeamController : CObjectController, ITeamContext {
 	public virtual void SpawnTeam() {
 		// STRIKER
 		this.m_StrikerSoccers = new CSoccerPlayerController[this.m_StrikerCount];
-		for (int i = 0; i < this.m_StrikerCount; i++) {
-			var soccer = this.SpawnSoccerPlayer (this.m_SoccerPrefabPath);
+		for (int i = 0; i < this.m_StrikerSoccers.Length; i++) {
+			var soccer = this.SpawnSoccerPlayer (this.m_StrikerPrefabPath);
 			soccer.startPoint = soccer.currentPoint = this.m_StrikerPoints [i];
 			var startPosition = soccer.startPoint.GetPosition ();
 			soccer.SetPosition (startPosition);
@@ -79,8 +94,8 @@ public class CTeamController : CObjectController, ITeamContext {
 		}
 		// DEFENDER
 		this.m_DefenderSoccers = new CSoccerPlayerController[this.m_DefenderCount];
-		for (int i = 0; i < this.m_DefenderCount; i++) {
-			var soccer = this.SpawnSoccerPlayer (this.m_SoccerPrefabPath);
+		for (int i = 0; i < this.m_DefenderSoccers.Length; i++) {
+			var soccer = this.SpawnSoccerPlayer (this.m_DefenderPrefabPath);
 			soccer.startPoint = soccer.currentPoint = this.m_DefenderPoints [i];
 			var startPosition = soccer.startPoint.GetPosition ();
 			soccer.SetPosition (startPosition);
@@ -88,23 +103,23 @@ public class CTeamController : CObjectController, ITeamContext {
 			soccer.Init ();
 			this.m_DefenderSoccers [i] = soccer;
 		}
-		// GOALKEEPER
-		this.m_GoalKeeperSoccers = new CSoccerPlayerController[this.m_GoalKeeperCount];
-		for (int i = 0; i < this.m_GoalKeeperCount; i++) {
-			var soccer = this.SpawnSoccerPlayer (this.m_SoccerPrefabPath);
-			soccer.startPoint = soccer.currentPoint = this.m_GoalPoints [i];
-			var startPosition = soccer.startPoint.GetPosition ();
-			soccer.SetPosition (startPosition);
-			soccer.Team = this;
-			soccer.Init ();
-			this.m_GoalKeeperSoccers [i] = soccer;
-		}
+//		// GOALKEEPER
+//		this.m_GoalKeeperSoccers = new CSoccerPlayerController[this.m_GoalKeeperCount];
+//		for (int i = 0; i < this.m_GoalKeeperSoccers.Length; i++) {
+//			var soccer = this.SpawnSoccerPlayer (this.m_GoalKeeperPrefabPath);
+//			soccer.startPoint = soccer.currentPoint = this.m_GoalPoints [i];
+//			var startPosition = soccer.startPoint.GetPosition ();
+//			soccer.SetPosition (startPosition);
+//			soccer.Team = this;
+//			soccer.Init ();
+//			this.m_GoalKeeperSoccers [i] = soccer;
+//		}
 	}
 
 	public virtual CSoccerPlayerController SpawnSoccerPlayer(string path) {
 		var prefab = Resources.Load<CSoccerPlayerController> (path);
 		var soccerPlayer = Instantiate (prefab);
-		soccerPlayer.transform.SetParent (this.transform);
+//		soccerPlayer.transform.SetParent (this.transform);
 		return soccerPlayer;
 	}
 
@@ -117,19 +132,20 @@ public class CTeamController : CObjectController, ITeamContext {
 		return true;
 	}
 
-	public virtual bool IsAttacking() {
-		return this.HaveBall();
-	}
-
-	public virtual bool HaveBall ()
+	public virtual bool IsTeamHaveBall ()
 	{
 		for (int i = 0; i < this.m_StrikerSoccers.Length; i++) {
-			if (this.m_StrikerSoccers [i].HaveABall) {
+			if (this.m_StrikerSoccers [i].HaveBall()) {
 				return true;
 			}
 		}
 		for (int i = 0; i < this.m_DefenderSoccers.Length; i++) {
-			if (this.m_DefenderSoccers [i].HaveABall) {
+			if (this.m_DefenderSoccers [i].HaveBall()) {
+				return true;
+			}
+		}
+		for (int i = 0; i < this.m_GoalKeeperSoccers.Length; i++) {
+			if (this.m_GoalKeeperSoccers [i].HaveBall()) {
 				return true;
 			}
 		}
@@ -137,4 +153,28 @@ public class CTeamController : CObjectController, ITeamContext {
 	}
 
 	#endregion
+
+	#region Getter && Setter 
+
+	public virtual CSoccerPlayerController GetSoccerHaveBall() {
+		for (int i = 0; i < this.m_StrikerSoccers.Length; i++) {
+			if (this.m_StrikerSoccers [i].HaveBall()) {
+				return this.m_StrikerSoccers [i];
+			}
+		}
+		for (int i = 0; i < this.m_DefenderSoccers.Length; i++) {
+			if (this.m_DefenderSoccers [i].HaveBall()) {
+				return this.m_DefenderSoccers [i];
+			}
+		}
+		for (int i = 0; i < this.m_GoalKeeperSoccers.Length; i++) {
+			if (this.m_GoalKeeperSoccers [i].HaveBall()) {
+				return this.m_GoalKeeperSoccers [i];
+			}
+		}
+		return null;
+	}
+
+	#endregion
+
 }

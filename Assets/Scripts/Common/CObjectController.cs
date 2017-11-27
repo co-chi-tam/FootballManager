@@ -34,6 +34,10 @@ public class CObjectController : MonoBehaviour {
 		
 	}
 
+	protected virtual void OnDrawGizmos() {
+
+	}
+
 	#endregion
 
 	#region Utility

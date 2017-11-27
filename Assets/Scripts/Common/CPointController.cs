@@ -54,8 +54,8 @@ public class CPointController : CObjectController {
 
 	public virtual CPointController GetNearestPoint(Vector3 position) {
 		var nearestPoint = this;
-		var nearestDistance = float.MaxValue;
-		var direction = Vector3.zero;
+		var direction = position - this.GetPosition ();
+		var nearestDistance = direction.sqrMagnitude;
 		for (int i = 0; i < this.m_SubPoints.Count; i++) {
 			var point = this.m_SubPoints [i];
 			direction = position - point.GetPosition ();
@@ -65,6 +65,23 @@ public class CPointController : CObjectController {
 			}
 		}
 		return nearestPoint;
+	}
+
+	public virtual Vector3 GetNearestPosition(Vector3 origin, Vector3 destination, float radius = 1f) {
+		// POINT POSITION
+		var direction = destination - this.GetPosition ();
+		var nearestPosition = direction.sqrMagnitude <= radius * radius 
+			? this.GetPosition ()
+			: destination - (destination - origin).normalized * radius;
+		// SUBPOINT POSITION
+		for (int i = 0; i < this.m_SubPoints.Count; i++) {
+			var point = this.m_SubPoints [i];
+			direction = destination - point.GetPosition ();
+			if (direction.sqrMagnitude <= nearestPosition.sqrMagnitude) {
+				nearestPosition = point.GetPosition();
+			}
+		}
+		return nearestPosition;
 	}
 
 	#endregion

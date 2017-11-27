@@ -6,6 +6,7 @@ using FSM;
 public class FSMSoccerAttackState : FSMBaseState { 
 
 	protected CSoccerPlayerController m_Controller;
+	protected CObjectController m_Goal;
 
 	public FSMSoccerAttackState (IContext context) : base (context)
 	{
@@ -15,20 +16,19 @@ public class FSMSoccerAttackState : FSMBaseState {
 	public override void StartState()
 	{
 		base.StartState ();
+		this.m_Goal = this.m_Controller.Team.EnemyGoal;
 	}
 
 	public override void UpdateState(float dt)
 	{
 		base.UpdateState (dt);
-		// MOVE FORWARD TARGET;
-		var point = this.m_Controller.currentPoint;
-		var nearestPoint = point.GetNearestPoint (this.m_Controller.GetPosition ());
-
-
-
-		this.m_Controller.SetTargetPosition (nearestPoint.GetPosition());
-		if (this.m_Controller.IsNearestPosition (nearestPoint.GetPosition())) {
-			this.m_Controller.currentPoint = nearestPoint;
+		// MOVE TO GOAL TARGET;
+		var point = this.m_Goal;
+		this.m_Controller.SetTargetPosition (point.GetPosition());
+		var ball = this.m_Controller.Ball;
+		if (ball != null) {
+			var ballWorldPosition = this.m_Controller.ballWorldPosition.transform.position;
+			ball.UpdatePosition (ballWorldPosition);
 		}
 	}
 

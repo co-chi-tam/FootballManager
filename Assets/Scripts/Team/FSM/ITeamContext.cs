@@ -5,6 +5,6 @@ using FSM;
 public interface ITeamContext : IContext {
 
 	bool IsPlaying();
-	bool HaveBall();
+	bool IsTeamHaveBall();
 
 }

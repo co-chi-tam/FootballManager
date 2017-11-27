@@ -6,15 +6,25 @@
       "states": [
         {
           "condition_name": "IsPlaying",
-          "state_name": "FSMTeamDefendState",
+          "state_name": "FSMTeamPlayingState",
           "states": [
             {
-              "condition_name": "HaveBall",
+              "condition_name": "IsTeamHaveBall",
               "state_name": "FSMTeamAttackState",
               "states": [
                 {
-                  "condition_name": "!HaveBall",
-                  "state_name": "FSMTeamDefendState",
+                  "condition_name": "!IsTeamHaveBall",
+                  "state_name": "FSMTeamPlayingState",
+                  "states": []
+                }
+              ]
+            },{
+              "condition_name": "!IsTeamHaveBall",
+              "state_name": "FSMTeamDefendState",
+              "states": [
+                {
+                  "condition_name": "IsTeamHaveBall",
+                  "state_name": "FSMTeamPlayingState",
                   "states": []
                 }
               ]
