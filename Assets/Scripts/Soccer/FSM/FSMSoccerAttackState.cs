@@ -16,6 +16,7 @@ public class FSMSoccerAttackState : FSMBaseState {
 	public override void StartState()
 	{
 		base.StartState ();
+		this.m_Controller.WalkSpeed();
 		this.m_Goal = this.m_Controller.Team.EnemyGoal;
 	}
 
@@ -23,13 +24,7 @@ public class FSMSoccerAttackState : FSMBaseState {
 	{
 		base.UpdateState (dt);
 		// MOVE TO GOAL TARGET;
-		var point = this.m_Goal;
-		this.m_Controller.SetTargetPosition (point.GetPosition());
-		var ball = this.m_Controller.Ball;
-		if (ball != null) {
-			var ballWorldPosition = this.m_Controller.ballWorldPosition.transform.position;
-			ball.UpdatePosition (ballWorldPosition);
-		}
+		this.m_Controller.SetTargetPosition (this.m_Goal.GetPosition());
 	}
 
 	public override void ExitState()

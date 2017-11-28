@@ -16,7 +16,8 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext {
 #endif
 
 	[Header("Control")]
-	[SerializeField]	protected float m_MoveSpeed = 5f;
+	[SerializeField]	protected float m_MoveSpeed = 3f;
+	[SerializeField]	protected float m_RunSpeed = 6f;
 	[SerializeField]	protected float m_BallValue = 1f;
 	public float ballValue {
 		get { return this.m_BallValue; }
@@ -26,6 +27,11 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext {
 	public float interactiveRadius {
 		get { return this.m_InteractiveRadius; }
 		set { this.m_InteractiveRadius = value; }
+	}
+	[SerializeField]	protected float m_TimeAction = 0.5f;
+	public float timeAction {
+		get { return this.m_TimeAction; }
+		set { this.m_TimeAction = value; }
 	}
 	[SerializeField]	protected CPointController m_StartPoint;
 	public CPointController startPoint {
@@ -38,12 +44,10 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext {
 		set { this.m_CurrentPoint = value; }
 	}
 	[SerializeField]	protected LayerMask m_TargetLayerMask;
-	[Header("Ball")]
-	[SerializeField]	protected CBallController m_Ball;
-	public CBallController Ball {
-		get { return this.m_Ball; }
-		set { this.m_Ball = value; }
+	public LayerMask targetLayerMask {
+		get { return this.m_TargetLayerMask; }
 	}
+	[Header("Ball")]
 	[SerializeField]	protected GameObject m_BallWorldPosition;
 	public GameObject ballWorldPosition {
 		get { return this.m_BallWorldPosition; }
@@ -51,6 +55,11 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext {
 	}
 
 	[Header("Team")]
+	[SerializeField]	protected CBallController m_BallController;
+	public CBallController Ball {
+		get { return this.m_BallController; }
+		set { this.m_BallController = value; }
+	}
 	[SerializeField]	protected CTeamController m_TeamController;
 	public CTeamController Team {
 		get { return this.m_TeamController; }
@@ -61,9 +70,9 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext {
 	protected FSMManager m_FSMManager;
 
 	protected float m_MaxSpeed = 3.5f;
-	protected float[] m_AngleCheckings = new float[] { 0, -15, 15, -45, 45 }; 
-	protected float[] m_AngleAvoidances = new float[] { 10, 40, -40, 40, -40 }; 
-	protected float[] m_LengthAvoidances = new float[] { 3f, 3f, 3f, 3f, 3f };
+//	protected float[] m_AngleCheckings = new float[] { 0, -15, 15, -45, 45 }; 
+//	protected float[] m_AngleAvoidances = new float[] { 10, 40, -40, 40, -40 }; 
+//	protected float[] m_LengthAvoidances = new float[] { 3f, 3f, 3f, 3f, 3f };
 
 	#endregion
 
@@ -84,10 +93,14 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext {
 		this.m_FSMManager.RegisterState ("FSMSoccerPassBallState", 	new FSMSoccerPassBallState(this));
 		this.m_FSMManager.RegisterState ("FSMSoccerAssistState", 	new FSMSoccerAssistState(this));
 		this.m_FSMManager.RegisterState ("FSMSoccerChaseBallState", new FSMSoccerChaseBallState(this));
+		this.m_FSMManager.RegisterState ("FSMSoccerCatchBallState", new FSMSoccerCatchBallState(this));
 
 		this.m_FSMManager.RegisterCondition ("IsTeamAttacking",		this.IsTeamAttacking);
 		this.m_FSMManager.RegisterCondition ("HaveBall", 			this.HaveBall);
 		this.m_FSMManager.RegisterCondition ("PassTheBall", 		this.PassTheBall);
+		this.m_FSMManager.RegisterCondition ("DidToManyChaseBall",	this.DidToManyChaseBall);
+		this.m_FSMManager.RegisterCondition ("IsNearAllyGoal",		this.IsNearAllyGoal);
+		this.m_FSMManager.RegisterCondition ("IsNearEnemyGoal",		this.IsNearEnemyGoal);
 
 		this.m_FSMManager.LoadFSM (this.m_FSMTextAsset.text);
 	}
@@ -120,24 +133,32 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext {
 		}
 	}
 
-	public virtual void UpdateCurrentNavAgent() {
-		var currentTransform = this.m_Transform;
-		var forward = currentTransform.forward;
-		var tmpSpeedThreshold = 1f;
-		var radiusBase = this.m_NavMeshAgent.radius;
-		for (int i = 0; i < m_AngleCheckings.Length; i++) {
-			var rayCast = Quaternion.AngleAxis(m_AngleCheckings[i], currentTransform.up) * forward * m_LengthAvoidances[i];
-			RaycastHit rayCastHit;
-			var direction = currentTransform.position + (rayCast.normalized * radiusBase);
-			if (Physics.Raycast (direction, rayCast, out rayCastHit, m_LengthAvoidances[i], this.m_TargetLayerMask)) {
-
-			} 
-#if UNITY_EDITOR
-			Debug.DrawRay (direction, rayCast, Color.white);
-#endif
-		}
-		this.m_NavMeshAgent.speed = this.m_MaxSpeed * tmpSpeedThreshold;
+	public virtual void WalkSpeed() {
+		this.m_NavMeshAgent.speed = this.m_MoveSpeed + Random.Range (0, 2f); 
 	}
+
+	public virtual void RunSpeed() {
+		this.m_NavMeshAgent.speed = this.m_RunSpeed + Random.Range (0, 2f); 
+	}
+
+//	public virtual void UpdateCurrentNavAgent() {
+//		var currentTransform = this.m_Transform;
+//		var forward = currentTransform.forward;
+//		var tmpSpeedThreshold = 1f;
+//		var radiusBase = this.m_NavMeshAgent.radius;
+//		for (int i = 0; i < m_AngleCheckings.Length; i++) {
+//			var rayCast = Quaternion.AngleAxis(m_AngleCheckings[i], currentTransform.up) * forward * m_LengthAvoidances[i];
+//			RaycastHit rayCastHit;
+//			var direction = currentTransform.position + (rayCast.normalized * radiusBase);
+//			if (Physics.Raycast (direction, rayCast, out rayCastHit, m_LengthAvoidances[i], this.m_TargetLayerMask)) {
+//
+//			} 
+//#if UNITY_EDITOR
+//			Debug.DrawRay (direction, rayCast, Color.white);
+//#endif
+//		}
+//		this.m_NavMeshAgent.speed = this.m_MaxSpeed * tmpSpeedThreshold;
+//	}
 
 	#endregion
 
@@ -149,12 +170,65 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext {
 
 	public virtual bool HaveBall ()
 	{
-		return this.m_Ball != null;
+		return this.m_BallController != null;
+	}
+
+	public virtual bool DidToManyChaseBall() {
+		var soccerColliders = Physics.OverlapSphere (
+			this.Team.Ball.GetPosition (), 
+			this.Team.Ball.ballRadius, 
+			this.m_TargetLayerMask);
+		var allyCount = 0;
+		var enememyCount = 0;
+		for (int i = 0; i < soccerColliders.Length; i++) {
+			var objController = soccerColliders [i].GetComponent<CSoccerPlayerController> ();
+			if (objController != null && objController != this) {
+				if (objController.Team.teamName == this.Team.teamName) {
+					allyCount += 1;
+				} else {
+					enememyCount += 1;
+				}
+			}
+		}
+		return soccerColliders.Length > 3 && enememyCount < 3;
 	}
 
 	public virtual bool PassTheBall ()
 	{
-		return false;
+		if (this.m_TimeAction > 0f) {
+			this.m_TimeAction -= Time.deltaTime;
+			return false;
+		}
+		this.m_TimeAction = 0.5f;
+		var allyCount = 0;
+		var enememyCount = 0;
+		var ballRadius = this.Team.Ball.ballRadius;
+		var soccerColliders = Physics.OverlapSphere (
+			this.GetPosition (), 
+			this.m_InteractiveRadius + ballRadius, 
+			this.m_TargetLayerMask);
+		for (int i = 0; i < soccerColliders.Length; i++) {
+			var objController = soccerColliders [i].GetComponent<CSoccerPlayerController> ();
+			if (objController != null && objController != this) {
+				if (objController.Team.teamName == this.Team.teamName) {
+					allyCount += 1;
+				} else {
+					enememyCount += 1;
+				}
+			}
+		}
+		return enememyCount >= allyCount 
+			&& allyCount > 1
+			&& this.m_BallController != null
+			&& this.m_BallController.isBallActive;
+	}
+
+	public virtual bool IsNearAllyGoal() {
+		return this.Team.IsNearAllyGoal ();
+	}
+
+	public virtual bool IsNearEnemyGoal() {
+		return this.Team.IsNearEnemyGoal ();
 	}
 
 	#endregion

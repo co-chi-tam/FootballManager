@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4872562842697066}
   - component: {fileID: 195196186567153088}
+  - component: {fileID: 136375099918568716}
   - component: {fileID: 114518195739555778}
   m_Layer: 8
   m_Name: RedStrikerPlayer
@@ -38,22 +39,6 @@ GameObject:
   - component: {fileID: 4537546620434012}
   m_Layer: 8
   m_Name: BallWorldPosition
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &1782014194402698
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4979735281560816}
-  - component: {fileID: 136622096787555812}
-  m_Layer: 8
-  m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -100,7 +85,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4872562842697066}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4872562842697066
 Transform:
@@ -113,23 +98,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4302264658762106}
-  - {fileID: 4979735281560816}
   - {fileID: 4537546620434012}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4979735281560816
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1782014194402698}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4872562842697066}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &23040486754477658
 MeshRenderer:
@@ -186,22 +157,24 @@ MonoBehaviour:
   m_FSMTextAsset: {fileID: 4900000, guid: 71fcb18a2d42682429c6f370fd4efb0f, type: 3}
   m_FSMStateName: 
   m_MoveSpeed: 3
+  m_RunSpeed: 6
   m_BallValue: 1
-  m_InteractiveRadius: 10
+  m_InteractiveRadius: 7
+  m_TimeAction: 0.5
   m_StartPoint: {fileID: 0}
   m_CurrentPoint: {fileID: 0}
   m_TargetLayerMask:
     serializedVersion: 2
     m_Bits: 256
-  m_Ball: {fileID: 0}
   m_BallWorldPosition: {fileID: 1444561546988818}
+  m_BallController: {fileID: 0}
   m_TeamController: {fileID: 0}
---- !u!136 &136622096787555812
+--- !u!136 &136375099918568716
 CapsuleCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1782014194402698}
+  m_GameObject: {fileID: 1117159836643962}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
@@ -217,7 +190,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 1117159836643962}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 1
+  m_Radius: 0.75
   m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 50

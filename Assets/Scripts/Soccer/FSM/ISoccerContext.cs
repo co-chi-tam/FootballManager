@@ -7,5 +7,8 @@ public interface ISoccerContext : IContext {
 	bool IsTeamAttacking();
 	bool HaveBall();
 	bool PassTheBall();
+	bool DidToManyChaseBall();
+	bool IsNearAllyGoal();
+	bool IsNearEnemyGoal();
 
 }

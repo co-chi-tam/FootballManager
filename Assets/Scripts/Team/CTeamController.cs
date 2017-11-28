@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using FSM;
+using SimpleSingleton;
 
-public class CTeamController : CObjectController, ITeamContext {
+public class CTeamController : CMonoSingleton<CTeamController>, ITeamContext {
 
 	#region Fields
 
@@ -34,6 +35,11 @@ public class CTeamController : CObjectController, ITeamContext {
 	[SerializeField]	protected CPointController[] m_GoalPoints;
 
 	[Header("Team")]
+	[SerializeField]	protected string m_TeamName;
+	public string teamName {
+		get { return this.m_TeamName; }
+		set { this.m_TeamName = value; }
+	}
 	[SerializeField]	protected int m_StrikerCount = 5;
 	[SerializeField]	protected int m_DefenderCount = 5;
 	[SerializeField]	protected int m_GoalKeeperCount = 1;
@@ -44,6 +50,7 @@ public class CTeamController : CObjectController, ITeamContext {
 	[Header("Soccer")]
 	[SerializeField]	protected string m_StrikerPrefabPath;
 	[SerializeField]	protected string m_DefenderPrefabPath;
+	[SerializeField]	protected string m_GoalKeeperPrefabPath;
 
 	protected FSMManager m_FSMManager;
 
@@ -63,13 +70,14 @@ public class CTeamController : CObjectController, ITeamContext {
 
 		this.m_FSMManager.RegisterCondition ("IsPlaying", 		this.IsPlaying);
 		this.m_FSMManager.RegisterCondition ("IsTeamHaveBall",	this.IsTeamHaveBall);
+		this.m_FSMManager.RegisterCondition ("IsNearAllyGoal",	this.IsNearAllyGoal);
+		this.m_FSMManager.RegisterCondition ("IsNearEnemyGoal",	this.IsNearEnemyGoal);
 
 		this.m_FSMManager.LoadFSM (this.m_FSMTextAsset.text);
 	}
 
-	protected override void Update ()
+	protected virtual void Update ()
 	{
-		base.Update ();
 		this.m_FSMManager.UpdateState (Time.deltaTime);
 #if UNITY_EDITOR
 		this.m_FSMStateName = this.m_FSMManager.currentStateName;
@@ -104,16 +112,16 @@ public class CTeamController : CObjectController, ITeamContext {
 			this.m_DefenderSoccers [i] = soccer;
 		}
 //		// GOALKEEPER
-//		this.m_GoalKeeperSoccers = new CSoccerPlayerController[this.m_GoalKeeperCount];
-//		for (int i = 0; i < this.m_GoalKeeperSoccers.Length; i++) {
-//			var soccer = this.SpawnSoccerPlayer (this.m_GoalKeeperPrefabPath);
-//			soccer.startPoint = soccer.currentPoint = this.m_GoalPoints [i];
-//			var startPosition = soccer.startPoint.GetPosition ();
-//			soccer.SetPosition (startPosition);
-//			soccer.Team = this;
-//			soccer.Init ();
-//			this.m_GoalKeeperSoccers [i] = soccer;
-//		}
+		this.m_GoalKeeperSoccers = new CSoccerPlayerController[this.m_GoalKeeperCount];
+		for (int i = 0; i < this.m_GoalKeeperSoccers.Length; i++) {
+			var soccer = this.SpawnSoccerPlayer (this.m_GoalKeeperPrefabPath);
+			soccer.startPoint = soccer.currentPoint = this.m_GoalPoints [i];
+			var startPosition = soccer.startPoint.GetPosition ();
+			soccer.SetPosition (startPosition);
+			soccer.Team = this;
+			soccer.Init ();
+			this.m_GoalKeeperSoccers [i] = soccer;
+		}
 	}
 
 	public virtual CSoccerPlayerController SpawnSoccerPlayer(string path) {
@@ -150,6 +158,16 @@ public class CTeamController : CObjectController, ITeamContext {
 			}
 		}
 		return false;
+	}
+
+	public virtual bool IsNearAllyGoal() {
+		var direction = this.m_AllyGoal.GetPosition () - this.m_BallController.GetPosition ();
+		return direction.sqrMagnitude <= 10f * 10f;
+	}
+
+	public virtual bool IsNearEnemyGoal() {
+		var direction = this.m_EnemyGoal.GetPosition () - this.m_BallController.GetPosition ();
+		return direction.sqrMagnitude <= 10f * 10f;
 	}
 
 	#endregion

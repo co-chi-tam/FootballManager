@@ -16,6 +16,7 @@ public class FSMSoccerIdleState : FSMBaseState {
 	{
 		base.StartState ();
 		// Return Point
+		this.m_Controller.WalkSpeed();
 		this.m_Controller.ReturnStartPoint ();
 	}
 

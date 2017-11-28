@@ -15,6 +15,7 @@ public class FSMSoccerAssistState : FSMBaseState {
 	public override void StartState()
 	{
 		base.StartState ();
+		this.m_Controller.RunSpeed();
 	}
 
 	public override void UpdateState(float dt)

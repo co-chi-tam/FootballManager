@@ -15,7 +15,8 @@ public class FSMSoccerChaseBallState : FSMBaseState {
 	public override void StartState()
 	{
 		base.StartState ();
-		this.m_Controller.ballValue += Random.Range (0, 1f);
+		this.m_Controller.RunSpeed();
+		this.m_Controller.ballValue = Random.Range (1, 2f);
 	}
 
 	public override void UpdateState(float dt)
