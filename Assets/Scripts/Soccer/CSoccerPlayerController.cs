@@ -5,7 +5,7 @@ using UnityEngine.AI;
 using FSM;
 
 [RequireComponent(typeof(NavMeshAgent))]
-public class CSoccerPlayerController : CObjectController, ISoccerContext {
+public class CSoccerPlayerController : CObjectController, ISoccerContext, IBallControlObject {
 
 	#region Fields
 
@@ -14,6 +14,9 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext {
 #if UNITY_EDITOR
 	[SerializeField]	protected string m_FSMStateName;
 #endif
+
+	[Header("Animation")]
+	[SerializeField]	protected GameObject m_Model;
 
 	[Header("Control")]
 	[SerializeField]	protected float m_MoveSpeed = 3f;
@@ -70,9 +73,9 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext {
 	protected FSMManager m_FSMManager;
 
 	protected float m_MaxSpeed = 3.5f;
-//	protected float[] m_AngleCheckings = new float[] { 0, -15, 15, -45, 45 }; 
-//	protected float[] m_AngleAvoidances = new float[] { 10, 40, -40, 40, -40 }; 
-//	protected float[] m_LengthAvoidances = new float[] { 3f, 3f, 3f, 3f, 3f };
+	protected float[] m_AngleCheckings = new float[] { 0, -15, 15, -45, 45 }; 
+	protected float[] m_AngleAvoidances = new float[] { 10, 20, -20, 20, -20 }; 
+	protected float m_LengthAvoidance = 3f;
 
 	#endregion
 
@@ -92,7 +95,8 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext {
 		this.m_FSMManager.RegisterState ("FSMSoccerDefendState", 	new FSMSoccerDefendState(this));
 		this.m_FSMManager.RegisterState ("FSMSoccerPassBallState", 	new FSMSoccerPassBallState(this));
 		this.m_FSMManager.RegisterState ("FSMSoccerAssistState", 	new FSMSoccerAssistState(this));
-		this.m_FSMManager.RegisterState ("FSMSoccerChaseBallState", new FSMSoccerChaseBallState(this));
+		this.m_FSMManager.RegisterState ("FSMSoccerChaseBallState",	new FSMSoccerChaseBallState(this));
+		this.m_FSMManager.RegisterState ("FSMSoccerShootBallState",	new FSMSoccerShootBallState(this));
 		this.m_FSMManager.RegisterState ("FSMSoccerCatchBallState", new FSMSoccerCatchBallState(this));
 
 		this.m_FSMManager.RegisterCondition ("IsTeamAttacking",		this.IsTeamAttacking);
@@ -114,6 +118,8 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext {
 #endif
 	}
 
+#if DEBUG_DRAW_INFO
+
 	protected override void OnDrawGizmos ()
 	{
 		base.OnDrawGizmos ();
@@ -121,9 +127,15 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext {
 		Gizmos.DrawWireSphere (this.GetPosition (), this.m_InteractiveRadius);
 	}
 
+#endif
+
 	#endregion
 
 	#region Main methods
+
+	public virtual void StandByPoint() {
+		this.SetTargetPosition (this.m_StartPoint.GetPosition ());
+	}
 
 	public virtual void ReturnStartPoint() {
 		if (this.m_StartPoint == null) {
@@ -141,21 +153,38 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext {
 		this.m_NavMeshAgent.speed = this.m_RunSpeed + Random.Range (0, 2f); 
 	}
 
-//	public virtual void UpdateCurrentNavAgent() {
+//	public virtual void UpdateLookingBall() {
+//		var direction = this.Team.Ball.GetPosition() - this.GetPosition();
+//		var angle = Mathf.Atan2 (direction.x, direction.z) * Mathf.Rad2Deg - 90f;
+//		this.m_Model.transform.localRotation 
+//						= Quaternion.Lerp (this.m_Model.transform.localRotation
+//								, Quaternion.AngleAxis (angle, Vector3.up), 0.1f);
+//	}
+
+//	public virtual void UpdateCurrentNavAgent(Vector3 target) {
 //		var currentTransform = this.m_Transform;
 //		var forward = currentTransform.forward;
-//		var tmpSpeedThreshold = 1f;
 //		var radiusBase = this.m_NavMeshAgent.radius;
+//		var toDirection = target - this.GetPosition ();
+//		var angle = Vector3.Angle (toDirection, forward);
+//		var needUpdate = false;
 //		for (int i = 0; i < m_AngleCheckings.Length; i++) {
-//			var rayCast = Quaternion.AngleAxis(m_AngleCheckings[i], currentTransform.up) * forward * m_LengthAvoidances[i];
+//			var rayCast = Quaternion.AngleAxis(m_AngleCheckings[i], Vector3.up) * forward * m_LengthAvoidance;
 //			RaycastHit rayCastHit;
 //			var direction = currentTransform.position + (rayCast.normalized * radiusBase);
-//			if (Physics.Raycast (direction, rayCast, out rayCastHit, m_LengthAvoidances[i], this.m_TargetLayerMask)) {
-//
-//			} 
+//			if (Physics.Raycast (direction, rayCast, out rayCastHit, m_LengthAvoidance, this.m_TargetLayerMask)) {
+//				angle += m_AngleAvoidances [i];
+//				needUpdate = true;
+//			}
 //#if UNITY_EDITOR
 //			Debug.DrawRay (direction, rayCast, Color.white);
 //#endif
+//		}
+//		if (needUpdate) {
+//			this.m_NavMeshAgent.updateRotation = true;
+//			this.m_NavMeshAgent.transform.rotation = 
+//				Quaternion.Lerp (this.m_NavMeshAgent.transform.rotation,
+//					Quaternion.AngleAxis (angle, Vector3.up), 0.1f);
 //		}
 //		this.m_NavMeshAgent.speed = this.m_MaxSpeed * tmpSpeedThreshold;
 //	}
@@ -224,11 +253,15 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext {
 	}
 
 	public virtual bool IsNearAllyGoal() {
-		return this.Team.IsNearAllyGoal ();
+		var ball = this.Team.Ball;
+		var direction = this.Team.AllyGoal.GetPosition () - ball.GetPosition ();
+		return direction.sqrMagnitude <= this.m_InteractiveRadius * this.m_InteractiveRadius;
 	}
 
 	public virtual bool IsNearEnemyGoal() {
-		return this.Team.IsNearEnemyGoal ();
+		var ball = this.Team.Ball;
+		var direction = this.Team.EnemyGoal.GetPosition () - ball.GetPosition ();
+		return direction.sqrMagnitude <= this.m_InteractiveRadius * this.m_InteractiveRadius;
 	}
 
 	#endregion
@@ -243,5 +276,21 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext {
 		return this.m_NavMeshAgent.destination;
 	}
 
+	public virtual Vector3 GetBallWorldPosition ()
+	{
+		return this.m_BallWorldPosition.transform.position;
+	}
+
+	public virtual float GetBallValue ()
+	{
+		return this.m_BallValue;
+	}
+
+	public virtual void SetBall(CBallController value) {
+		this.m_BallController = value;
+	}
+
 	#endregion
+
+
 }

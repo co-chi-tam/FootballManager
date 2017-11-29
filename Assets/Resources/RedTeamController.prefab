@@ -657,8 +657,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4050291885852658}
   - component: {fileID: 65280050488438364}
-  - component: {fileID: 114564453494565900}
   - component: {fileID: 114815932474768510}
+  - component: {fileID: 114991331469289448}
   m_Layer: 0
   m_Name: EnemyGoal
   m_TagString: Untagged
@@ -803,8 +803,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4401902122708276}
   - component: {fileID: 65748285189687586}
-  - component: {fileID: 114147364430195046}
   - component: {fileID: 114072114031461848}
+  - component: {fileID: 114317213111457528}
   m_Layer: 0
   m_Name: AllyGoal
   m_TagString: Untagged
@@ -1724,17 +1724,6 @@ MonoBehaviour:
   - {fileID: 114426311833184678}
   - {fileID: 114024015627873334}
   - {fileID: 114439648452190248}
---- !u!114 &114147364430195046
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1971019789789954}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b943fea3b3a699348b034c5bdf8111b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114202731828057522
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1853,6 +1842,18 @@ MonoBehaviour:
   - {fileID: 114703581567176896}
   - {fileID: 114638076605511518}
   - {fileID: 114649300246412520}
+--- !u!114 &114317213111457528
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1971019789789954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b04a5936b11ea42a52b967a7b1e12b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BallWorldPosition: {fileID: 1971019789789954}
 --- !u!114 &114320288588613046
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1990,17 +1991,6 @@ MonoBehaviour:
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114089481692229938}
---- !u!114 &114564453494565900
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1863140275692134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b943fea3b3a699348b034c5bdf8111b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114589243972117260
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2254,8 +2244,8 @@ MonoBehaviour:
   m_FSMTextAsset: {fileID: 4900000, guid: 9db38921d22db4d45af649fdefcff4c5, type: 3}
   m_FSMStateName: 
   m_BallController: {fileID: 0}
-  m_AllyGoal: {fileID: 114147364430195046}
-  m_EnemyGoal: {fileID: 114564453494565900}
+  m_AllyGoal: {fileID: 114317213111457528}
+  m_EnemyGoal: {fileID: 114991331469289448}
   m_StrikerPoints:
   - {fileID: 114912404326218576}
   - {fileID: 114136090813844524}
@@ -2325,6 +2315,18 @@ MonoBehaviour:
   - {fileID: 114264274516754720}
   - {fileID: 114037532662284396}
   - {fileID: 114298006245554888}
+--- !u!114 &114991331469289448
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1863140275692134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b04a5936b11ea42a52b967a7b1e12b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BallWorldPosition: {fileID: 1863140275692134}
 --- !u!114 &114999025675251706
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -48,6 +48,11 @@ public class CTeamController : CMonoSingleton<CTeamController>, ITeamContext {
 	[SerializeField]	protected CSoccerPlayerController[] m_GoalKeeperSoccers;
 
 	[Header("Soccer")]
+	[SerializeField]	protected CSoccerPlayerController m_SoccerHaveBall;
+	public CSoccerPlayerController soccerHaveBall {
+		get { return this.m_SoccerHaveBall; }
+		set { this.m_SoccerHaveBall = value; }
+	}
 	[SerializeField]	protected string m_StrikerPrefabPath;
 	[SerializeField]	protected string m_DefenderPrefabPath;
 	[SerializeField]	protected string m_GoalKeeperPrefabPath;
@@ -162,31 +167,66 @@ public class CTeamController : CMonoSingleton<CTeamController>, ITeamContext {
 
 	public virtual bool IsNearAllyGoal() {
 		var direction = this.m_AllyGoal.GetPosition () - this.m_BallController.GetPosition ();
-		return direction.sqrMagnitude <= 10f * 10f;
+		var radius = this.m_GoalKeeperSoccers [0].interactiveRadius;
+		return direction.sqrMagnitude <= radius * radius;
 	}
 
 	public virtual bool IsNearEnemyGoal() {
 		var direction = this.m_EnemyGoal.GetPosition () - this.m_BallController.GetPosition ();
-		return direction.sqrMagnitude <= 10f * 10f;
+		var radius = this.m_GoalKeeperSoccers [0].interactiveRadius;
+		return direction.sqrMagnitude <= radius * radius;
 	}
 
 	#endregion
 
 	#region Getter && Setter 
 
+	public virtual CSoccerPlayerController GetSoccerNearest(CSoccerPlayerController value) {
+		var nearestLength = 9999f;
+		int i = 0;
+		CSoccerPlayerController target = this.m_StrikerSoccers[0];
+		Vector3 direction = Vector3.zero;
+		for (i = 0; i < this.m_StrikerSoccers.Length; i++) {
+			direction = this.m_StrikerSoccers [i].GetPosition () - value.GetPosition (); 
+			if (direction.sqrMagnitude <= nearestLength) {
+				target = this.m_StrikerSoccers [i];
+				nearestLength = direction.sqrMagnitude; 
+			}
+		}
+		for (i = 0; i < this.m_DefenderSoccers.Length; i++) {
+			direction = this.m_DefenderSoccers [i].GetPosition () - value.GetPosition (); 
+			if (direction.sqrMagnitude <= nearestLength) {
+				target = this.m_DefenderSoccers [i];
+				nearestLength = direction.sqrMagnitude; 
+			}
+		}
+		for (i = 0; i < this.m_GoalKeeperSoccers.Length; i++) {
+			direction = this.m_GoalKeeperSoccers [i].GetPosition () - value.GetPosition (); 
+			if (direction.sqrMagnitude <= nearestLength) {
+				target = this.m_GoalKeeperSoccers [i];
+				nearestLength = direction.sqrMagnitude; 
+			}
+		}
+		return target;
+	}
+
 	public virtual CSoccerPlayerController GetSoccerHaveBall() {
-		for (int i = 0; i < this.m_StrikerSoccers.Length; i++) {
+		int i = 0;
+		for (i = 0; i < this.m_StrikerSoccers.Length; i++) {
 			if (this.m_StrikerSoccers [i].HaveBall()) {
+				this.m_SoccerHaveBall = this.m_StrikerSoccers [i];
 				return this.m_StrikerSoccers [i];
 			}
 		}
-		for (int i = 0; i < this.m_DefenderSoccers.Length; i++) {
+		for (i = 0; i < this.m_DefenderSoccers.Length; i++) {
 			if (this.m_DefenderSoccers [i].HaveBall()) {
+				this.m_SoccerHaveBall = this.m_DefenderSoccers [i];
 				return this.m_DefenderSoccers [i];
 			}
 		}
-		for (int i = 0; i < this.m_GoalKeeperSoccers.Length; i++) {
+		for (i = 0; i < this.m_GoalKeeperSoccers.Length; i++) {
 			if (this.m_GoalKeeperSoccers [i].HaveBall()) {
+				this.m_SoccerHaveBall = this.m_GoalKeeperSoccers [i];
 				return this.m_GoalKeeperSoccers [i];
 			}
 		}

@@ -30,6 +30,7 @@ public class FSMSoccerPassBallState : FSMBaseState {
 			.Where((x) => {
 				var objController = x.GetComponent<CSoccerPlayerController> (); 
 				return objController != null 
+					&& objController != this.m_Controller
 					&& objController.Team.teamName == this.m_Controller.Team.teamName;
 			}).OrderBy((a) => {
 				if (a.gameObject == this.m_Controller.gameObject)
@@ -40,7 +41,13 @@ public class FSMSoccerPassBallState : FSMBaseState {
 		// SET UP BALL
 		var ball = this.m_Controller.Team.Ball;
 		ball.isBallActive = false;
-		ball.SetBallTo (allyPlayers[0].GetComponent<CSoccerPlayerController> ());
+		if (allyPlayers.Length > 0) {
+			ball.SetBallTo (allyPlayers [0].GetComponent<CSoccerPlayerController> ());
+		} else {
+			var nearestAlly = this.m_Controller.Team.GetSoccerNearest (this.m_Controller);
+			ball.SetBallTo (nearestAlly);
+		}
+//		UnityEditor.Selection.activeGameObject = allyPlayers [0].gameObject;
 	}
 
 	public override void UpdateState(float dt)

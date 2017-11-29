@@ -15,7 +15,7 @@ public class FSMSoccerCatchBallState : FSMBaseState {
 	public override void StartState()
 	{
 		base.StartState ();
-		this.m_Controller.WalkSpeed();
+		this.m_Controller.RunSpeed();
 		this.m_Controller.ballValue = 5 + Random.Range (1, 2f);
 	}
 
@@ -24,6 +24,7 @@ public class FSMSoccerCatchBallState : FSMBaseState {
 		base.UpdateState (dt);
 		var ball = this.m_Controller.Team.Ball;
 		this.m_Controller.SetTargetPosition (ball.GetPosition());
+//		this.m_Controller.UpdateLookingBall ();
 		ball.UpdateBall (this.m_Controller);
 	}
 

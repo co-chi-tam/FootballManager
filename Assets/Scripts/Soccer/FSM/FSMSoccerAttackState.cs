@@ -25,6 +25,11 @@ public class FSMSoccerAttackState : FSMBaseState {
 		base.UpdateState (dt);
 		// MOVE TO GOAL TARGET;
 		this.m_Controller.SetTargetPosition (this.m_Goal.GetPosition());
+//		this.m_Controller.UpdateCurrentNavAgent (this.m_Goal.GetPosition());
+//		this.m_Controller.UpdateLookingBall ();
+#if UNITY_EDITOR
+		Debug.DrawLine (this.m_Controller.GetPosition (), this.m_Goal.GetPosition(), Color.green);
+#endif
 	}
 
 	public override void ExitState()

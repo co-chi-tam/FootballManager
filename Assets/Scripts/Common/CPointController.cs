@@ -67,12 +67,33 @@ public class CPointController : CObjectController {
 		return nearestPoint;
 	}
 
+	public virtual Vector3 GetDegreeNearestPosition(float degree, Vector3 origin, Vector3 forward, Vector3 destination, float radius = 1f) {
+		// POINT POSITION
+//		var toOther = origin - destination;
+//		var forwardValue = Vector3.Dot (forward, toOther) < 0 ? -1 : 1;
+		// POSITION
+		var direction = destination - this.GetPosition ();
+		var targetDegree = destination + Quaternion.AngleAxis(degree, Vector3.up) * forward * radius;
+		var nearestPosition = direction.sqrMagnitude <= radius * radius 
+			? this.GetPosition ()
+			: targetDegree;
+		// SUBPOINT POSITION
+		for (int i = 0; i < this.m_SubPoints.Count; i++) {
+			var point = this.m_SubPoints [i];
+			direction = destination - point.GetPosition ();
+			if (direction.sqrMagnitude <= nearestPosition.sqrMagnitude) {
+				nearestPosition = point.GetPosition();
+			}
+		}
+		return nearestPosition;
+	}
+
 	public virtual Vector3 GetNearestPosition(Vector3 origin, Vector3 destination, float radius = 1f) {
 		// POINT POSITION
 		var direction = destination - this.GetPosition ();
 		var nearestPosition = direction.sqrMagnitude <= radius * radius 
 			? this.GetPosition ()
-			: destination - (destination - origin).normalized * radius;
+			: (destination - (destination - origin).normalized * radius);
 		// SUBPOINT POSITION
 		for (int i = 0; i < this.m_SubPoints.Count; i++) {
 			var point = this.m_SubPoints [i];

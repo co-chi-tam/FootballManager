@@ -372,8 +372,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4147303858082516}
   - component: {fileID: 65969594540989020}
-  - component: {fileID: 114583674135004598}
   - component: {fileID: 114205897894953710}
+  - component: {fileID: 114733414678256214}
   m_Layer: 0
   m_Name: AllyGoal
   m_TagString: Untagged
@@ -819,8 +819,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4984455198732734}
   - component: {fileID: 65613746914889682}
-  - component: {fileID: 114366074647728984}
   - component: {fileID: 114215612899449988}
+  - component: {fileID: 114147271442663282}
   m_Layer: 0
   m_Name: EnemyGoal
   m_TagString: Untagged
@@ -1747,8 +1747,8 @@ MonoBehaviour:
   m_FSMTextAsset: {fileID: 4900000, guid: 9db38921d22db4d45af649fdefcff4c5, type: 3}
   m_FSMStateName: 
   m_BallController: {fileID: 0}
-  m_AllyGoal: {fileID: 114583674135004598}
-  m_EnemyGoal: {fileID: 114366074647728984}
+  m_AllyGoal: {fileID: 114733414678256214}
+  m_EnemyGoal: {fileID: 114147271442663282}
   m_StrikerPoints:
   - {fileID: 114788649327790382}
   - {fileID: 114015016800786292}
@@ -1773,6 +1773,18 @@ MonoBehaviour:
   m_StrikerPrefabPath: Soccers/BlueStrikerPlayer
   m_DefenderPrefabPath: Soccers/BlueDefenderPlayer
   m_GoalKeeperPrefabPath: Soccers/BlueGoalKeeperPlayer
+--- !u!114 &114147271442663282
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1953881675109756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b04a5936b11ea42a52b967a7b1e12b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BallWorldPosition: {fileID: 1953881675109756}
 --- !u!114 &114163573840801288
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1924,17 +1936,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Radius: 3
   m_SubPoints: []
---- !u!114 &114366074647728984
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1953881675109756}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b943fea3b3a699348b034c5bdf8111b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114427567621627446
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2093,17 +2094,6 @@ MonoBehaviour:
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114937795401712528}
---- !u!114 &114583674135004598
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1494500235088024}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b943fea3b3a699348b034c5bdf8111b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114616553994448082
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2130,6 +2120,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Radius: 3
   m_SubPoints: []
+--- !u!114 &114733414678256214
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1494500235088024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b04a5936b11ea42a52b967a7b1e12b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BallWorldPosition: {fileID: 1494500235088024}
 --- !u!114 &114738601939000672
 MonoBehaviour:
   m_ObjectHideFlags: 1

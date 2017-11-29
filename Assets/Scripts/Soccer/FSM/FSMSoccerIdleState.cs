@@ -17,12 +17,13 @@ public class FSMSoccerIdleState : FSMBaseState {
 		base.StartState ();
 		// Return Point
 		this.m_Controller.WalkSpeed();
-		this.m_Controller.ReturnStartPoint ();
+		this.m_Controller.StandByPoint ();
 	}
 
 	public override void UpdateState(float dt)
 	{
 		base.UpdateState (dt);
+//		this.m_Controller.UpdateLookingBall ();
 	}
 
 	public override void ExitState()

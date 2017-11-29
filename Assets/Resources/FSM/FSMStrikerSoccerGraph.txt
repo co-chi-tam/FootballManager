@@ -19,6 +19,16 @@
 	            }
               ]
             },{
+	          "condition_name": "IsNearEnemyGoal",
+	          "state_name": "FSMSoccerShootBallState",
+	          "states": [
+	            {
+	              "condition_name": "!HaveBall",
+	              "state_name": "FSMSoccerIdleState",
+	              "states": []
+	            }
+	          ]
+	        },{
               "condition_name": "!HaveBall",
               "state_name": "FSMSoccerIdleState",
               "states": []

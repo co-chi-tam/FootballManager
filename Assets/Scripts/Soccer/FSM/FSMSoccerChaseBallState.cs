@@ -30,6 +30,7 @@ public class FSMSoccerChaseBallState : FSMBaseState {
 				ball.GetPosition(), 
 				1f);
 		this.m_Controller.SetTargetPosition (nearestPosition);
+//		this.m_Controller.UpdateLookingBall ();
 		ball.UpdateBall (this.m_Controller);
 	}
 
