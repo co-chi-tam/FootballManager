@@ -145,7 +145,7 @@ MeshRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 2100000, guid: 80c03d1b2c9256f419b0f5acd5f6e893, type: 2}
+  - {fileID: 2100000, guid: 69f48ffba26e42b4a8bb9dbf09e9c30d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -171,7 +171,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1993748716263260}
-  m_Mesh: {fileID: 4300000, guid: 6d48c03eeaed75b42bcfedeee7c407f2, type: 3}
+  m_Mesh: {fileID: 4300000, guid: f76f1732662e4564faa1bc88634fe1f9, type: 3}
 --- !u!114 &114472102610131538
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -232,4 +232,4 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 1
+  m_ObstacleAvoidanceType: 2
