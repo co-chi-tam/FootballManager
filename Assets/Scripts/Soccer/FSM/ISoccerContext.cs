@@ -10,5 +10,6 @@ public interface ISoccerContext : IContext {
 	bool DidToManyChaseBall();
 	bool IsNearAllyGoal();
 	bool IsNearEnemyGoal();
+	bool IsBallInRange();
 
 }

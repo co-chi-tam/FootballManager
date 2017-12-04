@@ -9,7 +9,7 @@
           "state_name": "FSMSoccerPassBallState",
           "states": [
             {
-              "condition_name": "!HaveBall",
+              "condition_name": "IsActive",
               "state_name": "FSMSoccerIdleState",
               "states": []
             }
@@ -19,19 +19,15 @@
           "state_name": "FSMSoccerDefendState",
           "states": [
             {
-              "condition_name": "IsNearAllyGoal",
+              "condition_name": "IsNearAllyGoal||IsBallInRange",
               "state_name": "FSMSoccerCatchBallState",
               "states": [	
               	{
-	              "condition_name": "HaveBall||!IsNearAllyGoal",
+	              "condition_name": "IsTeamAttacking",
 	              "state_name": "FSMSoccerIdleState",
 	              "states": []
 	            }
             	]
-            },{
-              "condition_name": "HaveBall",
-              "state_name": "FSMSoccerIdleState",
-              "states": []
             }
           ]
         }

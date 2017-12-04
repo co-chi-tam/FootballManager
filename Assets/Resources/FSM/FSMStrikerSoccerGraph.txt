@@ -13,7 +13,7 @@
               "state_name": "FSMSoccerPassBallState",
               "states": [
 	            {
-	              "condition_name": "!HaveBall",
+	              "condition_name": "IsActive",
 	              "state_name": "FSMSoccerIdleState",
 	              "states": []
 	            }
@@ -23,7 +23,7 @@
 	          "state_name": "FSMSoccerShootBallState",
 	          "states": [
 	            {
-	              "condition_name": "!HaveBall",
+	              "condition_name": "IsActive",
 	              "state_name": "FSMSoccerIdleState",
 	              "states": []
 	            }

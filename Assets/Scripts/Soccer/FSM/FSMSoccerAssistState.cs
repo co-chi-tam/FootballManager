@@ -41,9 +41,6 @@ public class FSMSoccerAssistState : FSMBaseState {
 		this.m_Controller.SetTargetPosition (nearestPosition);
 //		this.m_Controller.UpdateCurrentNavAgent (soccerHaveBall.GetPosition());
 //		this.m_Controller.UpdateLookingBall ();
-#if UNITY_EDITOR
-		Debug.DrawLine (this.m_Controller.GetPosition (), nearestPosition, Color.green);
-#endif
 	}
 
 	public override void ExitState()

@@ -19,8 +19,10 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext, IBallC
 	[SerializeField]	protected GameObject m_Model;
 
 	[Header("Control")]
+	[SerializeField]	protected string m_PlayerName;
 	[SerializeField]	protected float m_MoveSpeed = 3f;
 	[SerializeField]	protected float m_RunSpeed = 6f;
+	[SerializeField]	protected float m_Potential = 2f;
 	[SerializeField]	protected float m_BallValue = 1f;
 	public float ballValue {
 		get { return this.m_BallValue; }
@@ -105,6 +107,8 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext, IBallC
 		this.m_FSMManager.RegisterCondition ("DidToManyChaseBall",	this.DidToManyChaseBall);
 		this.m_FSMManager.RegisterCondition ("IsNearAllyGoal",		this.IsNearAllyGoal);
 		this.m_FSMManager.RegisterCondition ("IsNearEnemyGoal",		this.IsNearEnemyGoal);
+		this.m_FSMManager.RegisterCondition ("IsBallInRange",		this.IsBallInRange);
+		this.m_FSMManager.RegisterCondition ("IsActive",			this.GetActive);
 
 		this.m_FSMManager.LoadFSM (this.m_FSMTextAsset.text);
 	}
@@ -125,6 +129,10 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext, IBallC
 		base.OnDrawGizmos ();
 		Gizmos.color = Color.blue;
 		Gizmos.DrawWireSphere (this.GetPosition (), this.m_InteractiveRadius);
+		Gizmos.color = Color.green;
+		Gizmos.DrawLine (this.GetPosition (), this.GetTargetPosition());
+		Gizmos.color = Color.blue;
+		Gizmos.DrawLine (this.GetPosition (), this.GetEnemyGoal());
 	}
 
 #endif
@@ -199,7 +207,8 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext, IBallC
 
 	public virtual bool HaveBall ()
 	{
-		return this.m_BallController != null;
+		return this.m_BallController != null 
+			&& this.m_BallController.owner == this as IBallControlObject;
 	}
 
 	public virtual bool DidToManyChaseBall() {
@@ -255,13 +264,19 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext, IBallC
 	public virtual bool IsNearAllyGoal() {
 		var ball = this.Team.Ball;
 		var direction = this.Team.AllyGoal.GetPosition () - ball.GetPosition ();
-		return direction.sqrMagnitude <= this.m_InteractiveRadius * this.m_InteractiveRadius;
+		return direction.sqrMagnitude <= this.interactiveRadius;
 	}
 
 	public virtual bool IsNearEnemyGoal() {
 		var ball = this.Team.Ball;
 		var direction = this.Team.EnemyGoal.GetPosition () - ball.GetPosition ();
-		return direction.sqrMagnitude <= this.m_InteractiveRadius * this.m_InteractiveRadius;
+		return direction.sqrMagnitude <= this.interactiveRadius;
+	}
+
+	public virtual bool IsBallInRange() {
+		var ball = this.Team.Ball;
+		var direction = this.GetPosition () - ball.GetPosition ();
+		return direction.sqrMagnitude <= this.interactiveRadius;
 	}
 
 	#endregion
@@ -288,6 +303,18 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext, IBallC
 
 	public virtual void SetBall(CBallController value) {
 		this.m_BallController = value;
+	}
+
+	public virtual CTeamController GetTeam() {
+		return this.m_TeamController;
+	}
+
+	public virtual CObjectController GetAllyGoal() {
+		return this.m_TeamController.AllyGoal;
+	}
+
+	public virtual CObjectController GetEnemyGoal() {
+		return this.m_TeamController.EnemyGoal;
 	}
 
 	#endregion

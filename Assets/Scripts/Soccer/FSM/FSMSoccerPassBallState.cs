@@ -41,13 +41,13 @@ public class FSMSoccerPassBallState : FSMBaseState {
 		// SET UP BALL
 		var ball = this.m_Controller.Team.Ball;
 		ball.isBallActive = false;
+		CSoccerPlayerController nearestAlly = null;
 		if (allyPlayers.Length > 0) {
-			ball.SetBallTo (allyPlayers [0].GetComponent<CSoccerPlayerController> ());
-		} else {
-			var nearestAlly = this.m_Controller.Team.GetSoccerNearest (this.m_Controller);
+			nearestAlly = allyPlayers [0].GetComponent<CSoccerPlayerController> ();
+			nearestAlly.WalkSpeed ();
 			ball.SetBallTo (nearestAlly);
-		}
-//		UnityEditor.Selection.activeGameObject = allyPlayers [0].gameObject;
+			this.m_Controller.Ball = null;
+		} 
 	}
 
 	public override void UpdateState(float dt)

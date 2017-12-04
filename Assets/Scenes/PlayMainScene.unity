@@ -221,6 +221,15 @@ Prefab:
       propertyPath: m_BallController
       value: 
       objectReference: {fileID: 1503353728}
+    - target: {fileID: 1906953139344852, guid: 43c8aaad4d3cd2c49b5daeb48a63be3d, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114733414678256214, guid: 43c8aaad4d3cd2c49b5daeb48a63be3d,
+        type: 2}
+      propertyPath: m_TeamController
+      value: 
+      objectReference: {fileID: 1557131191}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 43c8aaad4d3cd2c49b5daeb48a63be3d, type: 2}
   m_IsPrefabParent: 0
@@ -455,6 +464,10 @@ Prefab:
       propertyPath: m_LocalPosition.y
       value: 400
       objectReference: {fileID: 0}
+    - target: {fileID: 1742148623827730, guid: b8651c31669643745b7e64cb974928da, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b8651c31669643745b7e64cb974928da, type: 2}
   m_IsPrefabParent: 0
@@ -511,3 +524,9 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 1217544091}
   m_Script: {fileID: 11500000, guid: ab43fb6c8676ada45bb6bbe84c39aef6, type: 3}
+--- !u!114 &1557131191 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114127312151197132, guid: 43c8aaad4d3cd2c49b5daeb48a63be3d,
+    type: 2}
+  m_PrefabInternal: {fileID: 439896145}
+  m_Script: {fileID: 11500000, guid: 21561d08facaf8146b086ec6154abcb0, type: 3}

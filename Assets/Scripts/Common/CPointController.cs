@@ -81,7 +81,7 @@ public class CPointController : CObjectController {
 		for (int i = 0; i < this.m_SubPoints.Count; i++) {
 			var point = this.m_SubPoints [i];
 			direction = destination - point.GetPosition ();
-			if (direction.sqrMagnitude <= nearestPosition.sqrMagnitude) {
+			if (direction.sqrMagnitude <= radius * radius) {
 				nearestPosition = point.GetPosition();
 			}
 		}

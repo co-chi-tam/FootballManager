@@ -8,6 +8,7 @@ public class CObjectController : MonoBehaviour {
 
 	protected Transform m_Transform;
 	protected Vector3 m_StartPosition;
+	protected bool m_Active = true;
 
 	#endregion
 
@@ -53,6 +54,23 @@ public class CObjectController : MonoBehaviour {
 
 	#region Getter && Setter
 
+	public override int GetHashCode ()
+	{
+		return base.GetHashCode ();
+	}
+
+	public override bool Equals (object other)
+	{
+		return base.Equals (other);
+	}
+
+	public virtual bool GetActive() {
+		return this.m_Active;
+	}
+
+	public virtual void SetActive(bool value) {
+		this.m_Active = value;
+	}
 
 	public virtual void SetPosition(Vector3 position) {
 		this.m_Transform.position = position;

@@ -13,6 +13,13 @@ public class CGoalController : CObjectController, IBallControlObject {
 		set { this.m_BallWorldPosition = value; }
 	}
 
+	[Header("Team")]
+	[SerializeField]	protected CTeamController m_TeamController;
+	public CTeamController Team {
+		get { return this.m_TeamController; }
+		set { this.m_TeamController = value; }
+	}
+
 	#endregion
 
 	#region Getter && Setter
@@ -29,6 +36,10 @@ public class CGoalController : CObjectController, IBallControlObject {
 
 	public virtual void SetBall(CBallController value) {
 		
+	}
+
+	public virtual CTeamController GetTeam() {
+		return this.m_TeamController;
 	}
 
 	#endregion

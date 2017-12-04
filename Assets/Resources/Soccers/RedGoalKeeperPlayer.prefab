@@ -145,7 +145,7 @@ MeshRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 2100000, guid: a2240dccf211a424286eaefc2425f6d9, type: 2}
+  - {fileID: 2100000, guid: 80c03d1b2c9256f419b0f5acd5f6e893, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -171,7 +171,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1354497712416696}
-  m_Mesh: {fileID: 4300000, guid: d54a53eca7a8fba438c4d6129f82752e, type: 3}
+  m_Mesh: {fileID: 4300000, guid: 6d48c03eeaed75b42bcfedeee7c407f2, type: 3}
 --- !u!114 &114568860859767986
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -186,10 +186,11 @@ MonoBehaviour:
   m_FSMTextAsset: {fileID: 4900000, guid: abed768fee6210248bf7e57d0f66bb0f, type: 3}
   m_FSMStateName: 
   m_Model: {fileID: 1968480051283950}
-  m_MoveSpeed: 3
-  m_RunSpeed: 9
-  m_BallValue: 1
-  m_InteractiveRadius: 15
+  m_PlayerName: 
+  m_MoveSpeed: 4
+  m_RunSpeed: 8
+  m_BallValue: 5
+  m_InteractiveRadius: 20
   m_TimeAction: 0.5
   m_StartPoint: {fileID: 0}
   m_CurrentPoint: {fileID: 0}
@@ -206,7 +207,7 @@ CapsuleCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1207799315606558}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 1
   m_Height: 4
@@ -224,7 +225,7 @@ NavMeshAgent:
   m_Speed: 5
   m_Acceleration: 4
   avoidancePriority: 50
-  m_AngularSpeed: 180
+  m_AngularSpeed: 360
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -232,4 +233,4 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 2
+  m_ObstacleAvoidanceType: 1

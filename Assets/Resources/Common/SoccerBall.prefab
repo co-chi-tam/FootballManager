@@ -172,6 +172,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BallObject: {fileID: 1137103119141474}
   m_BallRadius: 2
+  m_BallSpeed: 12
   m_BallCurve:
     serializedVersion: 2
     m_Curve:
@@ -196,7 +197,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  m_IsBallActive: 1
 --- !u!135 &135242228067663592
 SphereCollider:
   m_ObjectHideFlags: 1

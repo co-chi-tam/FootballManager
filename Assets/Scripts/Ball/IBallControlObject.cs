@@ -10,4 +10,6 @@ public interface IBallControlObject {
 
 	void SetBall(CBallController ball);
 
+	CTeamController GetTeam();
+
 }
