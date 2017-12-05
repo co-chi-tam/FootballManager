@@ -6,6 +6,9 @@ public class CObjectController : MonoBehaviour {
 
 	#region Fields 
 
+	[Header("Collider")]
+	[SerializeField]	protected Collider m_Collider;
+
 	protected Transform m_Transform;
 	protected Vector3 m_StartPosition;
 	protected bool m_Active = true;
@@ -78,6 +81,10 @@ public class CObjectController : MonoBehaviour {
 
 	public virtual Vector3 GetPosition() {
 		return this.m_Transform.position;
+	}
+
+	public virtual Vector3 GetNearestPosition(Vector3 value) {
+		return this.GetPosition ();
 	}
 
 	#endregion

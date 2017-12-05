@@ -1606,6 +1606,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114439648452190248}
@@ -1620,6 +1621,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114298006245554888}
@@ -1634,6 +1636,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114999025675251706}
@@ -1650,6 +1653,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114673153889860150}
@@ -1676,6 +1680,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints: []
 --- !u!114 &114136090813844524
@@ -1689,6 +1694,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114046950896108312}
@@ -1705,6 +1711,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114333534415622868}
@@ -1719,6 +1726,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114426311833184678}
@@ -1735,6 +1743,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114260123315595494}
@@ -1751,6 +1760,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114936634053875770}
@@ -1766,6 +1776,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114037532662284396}
@@ -1781,6 +1792,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints: []
 --- !u!114 &114298006245554888
@@ -1794,6 +1806,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints: []
 --- !u!114 &114303533440320702
@@ -1807,6 +1820,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114841110505115802}
@@ -1822,6 +1836,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114881464304213468}
@@ -1837,6 +1852,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114703581567176896}
@@ -1853,6 +1869,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4b04a5936b11ea42a52b967a7b1e12b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 65748285189687586}
   m_BallWorldPosition: {fileID: 1971019789789954}
   m_TeamController: {fileID: 114915790014833082}
 --- !u!114 &114320288588613046
@@ -1866,6 +1883,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints: []
 --- !u!114 &114333534415622868
@@ -1879,6 +1897,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints: []
 --- !u!114 &114334216082285598
@@ -1892,6 +1911,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints: []
 --- !u!114 &114363392291894520
@@ -1905,6 +1925,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints: []
 --- !u!114 &114388733553414370
@@ -1918,6 +1939,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114665990078868432}
@@ -1932,6 +1954,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114273955549586448}
@@ -1946,6 +1969,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114388733553414370}
@@ -1961,6 +1985,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114024015627873334}
@@ -1976,6 +2001,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints: []
 --- !u!114 &114558708917642166
@@ -1989,6 +2015,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114089481692229938}
@@ -2003,6 +2030,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114309685434097928}
@@ -2019,6 +2047,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114558708917642166}
@@ -2034,6 +2063,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114598573202111650}
@@ -2050,6 +2080,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114649300246412520}
@@ -2064,6 +2095,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints: []
 --- !u!114 &114665990078868432
@@ -2077,6 +2109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints: []
 --- !u!114 &114666131891907668
@@ -2090,6 +2123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114918674301056460}
@@ -2106,6 +2140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114708186022447802}
@@ -2120,6 +2155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114638076605511518}
@@ -2135,6 +2171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints: []
 --- !u!114 &114725359336035392
@@ -2148,6 +2185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints: []
 --- !u!114 &114815932474768510
@@ -2172,6 +2210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints: []
 --- !u!114 &114841110505115802
@@ -2185,6 +2224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114363392291894520}
@@ -2199,6 +2239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints: []
 --- !u!114 &114881464304213468
@@ -2212,6 +2253,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114725359336035392}
@@ -2226,6 +2268,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114415199740177534}
@@ -2265,9 +2308,14 @@ MonoBehaviour:
   m_StrikerCount: 5
   m_DefenderCount: 5
   m_GoalKeeperCount: 1
+  m_StrikerFSMAsset: {fileID: 4900000, guid: 71fcb18a2d42682429c6f370fd4efb0f, type: 3}
+  m_DefenderFSMAsset: {fileID: 4900000, guid: abed768fee6210248bf7e57d0f66bb0f, type: 3}
+  m_GoalKeeperFSMAsset: {fileID: 4900000, guid: abed768fee6210248bf7e57d0f66bb0f,
+    type: 3}
   m_StrikerSoccers: []
   m_DefenderSoccers: []
   m_GoalKeeperSoccers: []
+  m_MiniMap: {fileID: 0}
   m_SoccerHaveBall: {fileID: 0}
   m_StrikerPrefabPath: Soccers/RedStrikerPlayer
   m_DefenderPrefabPath: Soccers/RedDefenderPlayer
@@ -2283,6 +2331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114140093485353626}
@@ -2298,6 +2347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114334216082285598}
@@ -2312,6 +2362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114264274516754720}
@@ -2328,6 +2379,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4b04a5936b11ea42a52b967a7b1e12b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 65280050488438364}
   m_BallWorldPosition: {fileID: 1863140275692134}
   m_TeamController: {fileID: 0}
 --- !u!114 &114999025675251706
@@ -2341,6 +2393,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b9cb4d01a8f3004a987101ee8714647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_Radius: 3
   m_SubPoints:
   - {fileID: 114405262339032206}

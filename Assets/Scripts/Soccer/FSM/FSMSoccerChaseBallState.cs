@@ -23,13 +23,13 @@ public class FSMSoccerChaseBallState : FSMBaseState {
 	{
 		base.UpdateState (dt);
 		var ball = this.m_Controller.Team.Ball;
-		var nearestPosition = this.m_Controller
-			.startPoint
-			.GetNearestPosition (
-				this.m_Controller.GetPosition(),
-				ball.GetPosition(), 
-				1f);
-		this.m_Controller.SetTargetPosition (nearestPosition);
+//		var nearestPosition = this.m_Controller
+//			.startPoint
+//			.GetNearestPosition (
+//				this.m_Controller.GetPosition(),
+//				ball.GetPosition(), 
+//				1f);
+		this.m_Controller.SetTargetPosition (ball.GetPosition());
 		ball.UpdateBall (this.m_Controller);
 	}
 

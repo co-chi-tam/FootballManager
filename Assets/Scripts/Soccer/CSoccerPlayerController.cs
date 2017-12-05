@@ -5,12 +5,16 @@ using UnityEngine.AI;
 using FSM;
 
 [RequireComponent(typeof(NavMeshAgent))]
-public class CSoccerPlayerController : CObjectController, ISoccerContext, IBallControlObject {
+public class CSoccerPlayerController : CObjectController, ISoccerContext, IBallControlObject, IMapObject {
 
 	#region Fields
 
 	[Header("FSM")]
 	[SerializeField]	protected TextAsset m_FSMTextAsset;
+	public TextAsset FSMTextAsset {
+		get { return this.m_FSMTextAsset; }
+		set { this.m_FSMTextAsset = value; }
+	}
 #if UNITY_EDITOR
 	[SerializeField]	protected string m_FSMStateName;
 #endif
@@ -83,6 +87,12 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext, IBallC
 
 	#region Monobehaviour Implementation
 
+	public override void Init ()
+	{
+		base.Init ();
+		this.m_FSMManager.LoadFSM (this.m_FSMTextAsset.text);
+	}
+
 	protected override void Awake ()
 	{
 		base.Awake ();
@@ -110,12 +120,14 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext, IBallC
 		this.m_FSMManager.RegisterCondition ("IsBallInRange",		this.IsBallInRange);
 		this.m_FSMManager.RegisterCondition ("IsActive",			this.GetActive);
 
-		this.m_FSMManager.LoadFSM (this.m_FSMTextAsset.text);
+		this.m_Active = false;
 	}
 
 	protected override void Update ()
 	{
-		base.Update ();		
+		base.Update ();	
+		if (this.m_Active == false)
+			return;
 		this.m_FSMManager.UpdateState (Time.deltaTime);
 #if UNITY_EDITOR
 		this.m_FSMStateName = this.m_FSMManager.currentStateName;
@@ -276,7 +288,7 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext, IBallC
 	public virtual bool IsBallInRange() {
 		var ball = this.Team.Ball;
 		var direction = this.GetPosition () - ball.GetPosition ();
-		return direction.sqrMagnitude <= this.interactiveRadius;
+		return direction.sqrMagnitude <= this.interactiveRadius && !this.IsTeamAttacking();
 	}
 
 	#endregion
@@ -318,6 +330,5 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext, IBallC
 	}
 
 	#endregion
-
 
 }

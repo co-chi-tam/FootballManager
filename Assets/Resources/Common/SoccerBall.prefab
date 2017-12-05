@@ -170,8 +170,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab43fb6c8676ada45bb6bbe84c39aef6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_BallObject: {fileID: 1137103119141474}
-  m_BallRadius: 2
+  m_BallRadius: 3
   m_BallSpeed: 12
   m_BallCurve:
     serializedVersion: 2

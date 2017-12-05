@@ -24,6 +24,12 @@ public class CGoalController : CObjectController, IBallControlObject {
 
 	#region Getter && Setter
 
+	public override Vector3 GetNearestPosition(Vector3 value) {
+		if (this.m_Collider == null)
+			return base.GetNearestPosition(value);
+		return this.m_Collider.ClosestPoint (value);
+	}
+
 	public virtual Vector3 GetBallWorldPosition ()
 	{
 		return this.m_BallWorldPosition.transform.position;
@@ -43,4 +49,5 @@ public class CGoalController : CObjectController, IBallControlObject {
 	}
 
 	#endregion
+
 }

@@ -43,9 +43,19 @@ public class CTeamController : CMonoSingleton<CTeamController>, ITeamContext {
 	[SerializeField]	protected int m_StrikerCount = 5;
 	[SerializeField]	protected int m_DefenderCount = 5;
 	[SerializeField]	protected int m_GoalKeeperCount = 1;
+	[SerializeField]	protected TextAsset m_StrikerFSMAsset;
+	[SerializeField]	protected TextAsset m_DefenderFSMAsset;
+	[SerializeField]	protected TextAsset m_GoalKeeperFSMAsset;
 	[SerializeField]	protected CSoccerPlayerController[] m_StrikerSoccers;
 	[SerializeField]	protected CSoccerPlayerController[] m_DefenderSoccers;
 	[SerializeField]	protected CSoccerPlayerController[] m_GoalKeeperSoccers;
+
+	[Header("MiniMap")]
+	[SerializeField]	protected CMiniMap m_MiniMap;
+	public CMiniMap miniMap {
+		get { return this.m_MiniMap; }
+		set { this.m_MiniMap = value; }
+	}
 
 	[Header("Soccer")]
 	[SerializeField]	protected CSoccerPlayerController m_SoccerHaveBall;
@@ -102,8 +112,10 @@ public class CTeamController : CMonoSingleton<CTeamController>, ITeamContext {
 			var startPosition = soccer.startPoint.GetPosition ();
 			soccer.SetPosition (startPosition);
 			soccer.Team = this;
+			soccer.SetActive (true);
 			soccer.Init ();
 			this.m_StrikerSoccers [i] = soccer;
+			this.AddMapObject (soccer);
 		}
 		// DEFENDER
 		this.m_DefenderSoccers = new CSoccerPlayerController[this.m_DefenderCount];
@@ -113,8 +125,10 @@ public class CTeamController : CMonoSingleton<CTeamController>, ITeamContext {
 			var startPosition = soccer.startPoint.GetPosition ();
 			soccer.SetPosition (startPosition);
 			soccer.Team = this;
+			soccer.SetActive (true);
 			soccer.Init ();
 			this.m_DefenderSoccers [i] = soccer;
+			this.AddMapObject (soccer);
 		}
 //		// GOALKEEPER
 		this.m_GoalKeeperSoccers = new CSoccerPlayerController[this.m_GoalKeeperCount];
@@ -124,9 +138,13 @@ public class CTeamController : CMonoSingleton<CTeamController>, ITeamContext {
 			var startPosition = soccer.startPoint.GetPosition ();
 			soccer.SetPosition (startPosition);
 			soccer.Team = this;
+			soccer.SetActive (true);
 			soccer.Init ();
 			this.m_GoalKeeperSoccers [i] = soccer;
+			this.AddMapObject (soccer);
 		}
+		// MINI MAP
+		this.DisplayMiniMap ();
 	}
 
 	public virtual CSoccerPlayerController SpawnSoccerPlayer(string path) {
@@ -134,6 +152,18 @@ public class CTeamController : CMonoSingleton<CTeamController>, ITeamContext {
 		var soccerPlayer = Instantiate (prefab);
 //		soccerPlayer.transform.SetParent (this.transform);
 		return soccerPlayer;
+	}
+
+	public virtual void AddMapObject(IMapObject value) {
+		if (this.m_MiniMap == null)
+			return;
+		this.m_MiniMap.AddMapObject (value);
+	}
+
+	public virtual void DisplayMiniMap() {
+		if (this.m_MiniMap == null)
+			return;
+		this.m_MiniMap.DisplayMiniMap ();
 	}
 
 	#endregion

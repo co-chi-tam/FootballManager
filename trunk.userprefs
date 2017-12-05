@@ -1,13 +1,13 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Ball\CBallController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Soccer\CSoccerPlayerController.cs">
     <Files>
-      <File FileName="Assets\Scripts\Soccer\CSoccerPlayerController.cs" Line="33" Column="40" />
-      <File FileName="Assets\Scripts\Soccer\FSM\FSMSoccerPassBallState.cs" Line="25" Column="33" />
-      <File FileName="Assets\Scripts\Ball\CBallController.cs" Line="121" Column="1" />
-      <File FileName="Assets\Resources\FSM\FSMStrikerSoccerGraph.txt" Line="45" Column="14" NotebookId="1" />
-      <File FileName="Assets\Resources\FSM\FSMDefenderSoccerGraph.txt" Line="46" Column="35" NotebookId="1" />
-      <File FileName="Assets\Resources\FSM\FSMGoalKeeperGraph.txt" Line="22" Column="48" NotebookId="1" />
+      <File FileName="Assets\Scripts\Team\CTeamController.cs" Line="195" Column="40" />
+      <File FileName="Assets\Scripts\Goal\CGoalController.cs" Line="28" Column="18" />
+      <File FileName="Assets\Scripts\Soccer\CSoccerPlayerController.cs" Line="122" Column="11" />
+      <File FileName="Assets\Resources\FSM\FSMStrikerSoccerGraph.txt" Line="41" Column="14" NotebookId="1" />
+      <File FileName="Assets\Resources\FSM\FSMDefenderSoccerGraph.txt" Line="16" Column="43" NotebookId="1" />
+      <File FileName="Assets\Resources\FSM\FSMGoalKeeperGraph.txt" Line="26" Column="50" NotebookId="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
