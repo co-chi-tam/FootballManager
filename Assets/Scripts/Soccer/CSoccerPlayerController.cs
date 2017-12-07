@@ -22,25 +22,32 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext, IBallC
 	[Header("Animation")]
 	[SerializeField]	protected GameObject m_Model;
 
+	[Header("Data")]
+	[SerializeField]	protected CSoccerData m_Data;
+
 	[Header("Control")]
 	[SerializeField]	protected string m_PlayerName;
 	[SerializeField]	protected float m_MoveSpeed = 3f;
 	[SerializeField]	protected float m_RunSpeed = 6f;
-	[SerializeField]	protected float m_Potential = 2f;
-	[SerializeField]	protected float m_BallValue = 1f;
-	public float ballValue {
-		get { return this.m_BallValue; }
-		set { this.m_BallValue = value; }
+	[SerializeField]	protected float m_PotentialPoint = 2f;
+	public float potentialPoint {
+		get { return this.m_PotentialPoint; }
+		set { this.m_PotentialPoint = value; }
 	}
-	[SerializeField]	protected float m_InteractiveRadius = 3f;
+	[SerializeField]	protected float m_TackleBallValue = 1f;
+	public float tackleBallValue {
+		get { return this.m_TackleBallValue; }
+		set { this.m_TackleBallValue = value; }
+	}
+	[SerializeField]	protected float m_InteractiveRadius = 7f;
 	public float interactiveRadius {
 		get { return this.m_InteractiveRadius; }
 		set { this.m_InteractiveRadius = value; }
 	}
-	[SerializeField]	protected float m_TimeAction = 0.5f;
-	public float timeAction {
-		get { return this.m_TimeAction; }
-		set { this.m_TimeAction = value; }
+	[SerializeField]	protected float m_TimePerAction = 0.5f;
+	public float timePerAction {
+		get { return this.m_TimePerAction; }
+		set { this.m_TimePerAction = value; }
 	}
 	[SerializeField]	protected CPointController m_StartPoint;
 	public CPointController startPoint {
@@ -90,7 +97,17 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext, IBallC
 	public override void Init ()
 	{
 		base.Init ();
+		// LOAD FSM
 		this.m_FSMManager.LoadFSM (this.m_FSMTextAsset.text);
+
+		// LOAD DATA
+		this.m_PlayerName 			= this.m_Data.objectName;
+		this.m_MoveSpeed 			= this.m_Data.moveSpeed;
+		this.m_RunSpeed 			= this.m_Data.runSpeed;
+		this.m_PotentialPoint 		= this.m_Data.potentialPoint;
+		this.m_TackleBallValue 		= this.m_Data.tackleBallValue;
+		this.m_InteractiveRadius 	= this.m_Data.interactiveRadius;
+		this.m_TimePerAction 		= this.m_Data.timePerActive;
 	}
 
 	protected override void Awake ()
@@ -143,8 +160,6 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext, IBallC
 		Gizmos.DrawWireSphere (this.GetPosition (), this.m_InteractiveRadius);
 		Gizmos.color = Color.green;
 		Gizmos.DrawLine (this.GetPosition (), this.GetTargetPosition());
-		Gizmos.color = Color.blue;
-		Gizmos.DrawLine (this.GetPosition (), this.GetEnemyGoal());
 	}
 
 #endif
@@ -166,11 +181,18 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext, IBallC
 	}
 
 	public virtual void WalkSpeed() {
-		this.m_NavMeshAgent.speed = this.m_MoveSpeed + Random.Range (0, 2f); 
+		this.m_NavMeshAgent.speed = this.m_MoveSpeed + Random.Range (0f, this.m_PotentialPoint); 
 	}
 
 	public virtual void RunSpeed() {
-		this.m_NavMeshAgent.speed = this.m_RunSpeed + Random.Range (0, 2f); 
+		this.m_NavMeshAgent.speed = this.m_RunSpeed + Random.Range (0f, this.m_PotentialPoint); 
+	}
+
+	public virtual void UpdateTackleBall() {
+		this.m_TackleBallValue = Random.Range (
+			this.m_TackleBallValue, 
+			this.m_TackleBallValue + this.m_PotentialPoint
+		);
 	}
 
 //	public virtual void UpdateLookingBall() {
@@ -223,15 +245,20 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext, IBallC
 			&& this.m_BallController.owner == this as IBallControlObject;
 	}
 
+	private Collider[] m_ChaseBallColliders = new Collider[22];
 	public virtual bool DidToManyChaseBall() {
-		var soccerColliders = Physics.OverlapSphere (
-			this.Team.Ball.GetPosition (), 
-			this.Team.Ball.ballRadius, 
-			this.m_TargetLayerMask);
+		var colliderCount = Physics.OverlapSphereNonAlloc (
+			this.Team.Ball.GetPosition (),
+			this.m_InteractiveRadius,
+			this.m_ChaseBallColliders,
+			this.m_TargetLayerMask
+		);
 		var allyCount = 0;
 		var enememyCount = 0;
-		for (int i = 0; i < soccerColliders.Length; i++) {
-			var objController = soccerColliders [i].GetComponent<CSoccerPlayerController> ();
+		for (int i = 0; i < this.m_ChaseBallColliders.Length; i++) {
+			if (this.m_ChaseBallColliders [i] == null)
+				break;
+			var objController = this.m_ChaseBallColliders [i].GetComponent<CSoccerPlayerController> ();
 			if (objController != null && objController != this) {
 				if (objController.Team.teamName == this.Team.teamName) {
 					allyCount += 1;
@@ -240,34 +267,43 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext, IBallC
 				}
 			}
 		}
-		return soccerColliders.Length > 3 && enememyCount < 3;
+		return colliderCount > 3 && enememyCount < 3;
 	}
 
+	private Collider[] m_PassBallColliders = new Collider[22];
 	public virtual bool PassTheBall ()
 	{
-		if (this.m_TimeAction > 0f) {
-			this.m_TimeAction -= Time.deltaTime;
+		if (this.m_TimePerAction > 0f) {
+			this.m_TimePerAction -= Time.deltaTime;
 			return false;
 		}
-		this.m_TimeAction = 0.5f;
+		this.m_TimePerAction = this.m_Data.timePerActive;
+		var ballRadius = this.Team.Ball.ballRadius;
+		var colliderCount = Physics.OverlapSphereNonAlloc (
+			this.GetPosition (),
+			this.m_InteractiveRadius + ballRadius,
+			this.m_PassBallColliders,
+			this.m_TargetLayerMask
+		);
 		var allyCount = 0;
 		var enememyCount = 0;
-		var ballRadius = this.Team.Ball.ballRadius;
-		var soccerColliders = Physics.OverlapSphere (
-			this.GetPosition (), 
-			this.m_InteractiveRadius + ballRadius, 
-			this.m_TargetLayerMask);
-		for (int i = 0; i < soccerColliders.Length; i++) {
-			var objController = soccerColliders [i].GetComponent<CSoccerPlayerController> ();
+		var forward = this.m_Transform.TransformDirection (Vector3.forward);
+		for (int i = 0; i < this.m_PassBallColliders.Length; i++) {
+			if (this.m_PassBallColliders [i] == null)
+				break;
+			var objController = this.m_PassBallColliders [i].GetComponent<CSoccerPlayerController> ();
 			if (objController != null && objController != this) {
 				if (objController.Team.teamName == this.Team.teamName) {
-					allyCount += 1;
+					var toOther = this.GetPosition() - objController.GetPosition();
+					var forwardValue = Vector3.Dot (forward, toOther) > 0;
+					allyCount = forwardValue ? allyCount + 1 : allyCount;
 				} else {
 					enememyCount += 1;
 				}
 			}
 		}
-		return enememyCount >= allyCount 
+		return colliderCount > 1 
+			&& enememyCount >= allyCount 
 			&& allyCount > 1
 			&& this.m_BallController != null
 			&& this.m_BallController.isBallActive;
@@ -276,24 +312,42 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext, IBallC
 	public virtual bool IsNearAllyGoal() {
 		var ball = this.Team.Ball;
 		var direction = this.Team.AllyGoal.GetPosition () - ball.GetPosition ();
-		return direction.sqrMagnitude <= this.interactiveRadius;
+		return direction.sqrMagnitude <= this.m_InteractiveRadius * this.m_InteractiveRadius;
 	}
 
 	public virtual bool IsNearEnemyGoal() {
 		var ball = this.Team.Ball;
 		var direction = this.Team.EnemyGoal.GetPosition () - ball.GetPosition ();
-		return direction.sqrMagnitude <= this.interactiveRadius;
+		return direction.sqrMagnitude <= this.m_InteractiveRadius * this.m_InteractiveRadius;
 	}
 
 	public virtual bool IsBallInRange() {
 		var ball = this.Team.Ball;
 		var direction = this.GetPosition () - ball.GetPosition ();
-		return direction.sqrMagnitude <= this.interactiveRadius && !this.IsTeamAttacking();
+		return direction.sqrMagnitude <= this.m_InteractiveRadius * this.m_InteractiveRadius 
+			&& !this.IsTeamAttacking();
 	}
 
 	#endregion
 
 	#region Getter && Setter 
+
+	public virtual void SetFSMAsset(TextAsset value) {
+		// LOAD FSM
+		this.m_FSMTextAsset = value;
+	}
+
+	public override void SetData (CObjectData value)
+	{
+		base.SetData (value);
+		this.m_Data = value as CSoccerData;
+	}
+
+	public override CObjectData GetData ()
+	{
+		base.GetData ();
+		return this.m_Data as CObjectData;
+	}
 
 	public virtual void SetTargetPosition(Vector3 position) {
 		this.m_NavMeshAgent.destination = position;
@@ -308,9 +362,28 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext, IBallC
 		return this.m_BallWorldPosition.transform.position;
 	}
 
-	public virtual float GetBallValue ()
-	{
-		return this.m_BallValue;
+	private Collider[] m_BallValueColliders = new Collider[22];
+	public virtual float GetBallValue () {
+		var additionValue = 0;
+		Physics.OverlapSphereNonAlloc (
+			this.GetPosition (),
+			this.m_InteractiveRadius,
+			this.m_BallValueColliders,
+			this.m_TargetLayerMask
+		);
+		for (int i = 0; i < this.m_BallValueColliders.Length; i++) {
+			if (this.m_BallValueColliders [i] == null)
+				break;
+			var objController = this.m_BallValueColliders [i].GetComponent<CSoccerPlayerController> ();
+			if (objController != null) {
+				if (objController.Team.teamName == this.Team.teamName) {
+					additionValue--;
+				} else {
+					additionValue--;
+				}
+			}
+		}
+		return this.m_TackleBallValue + additionValue;
 	}
 
 	public virtual void SetBall(CBallController value) {
@@ -327,6 +400,10 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext, IBallC
 
 	public virtual CObjectController GetEnemyGoal() {
 		return this.m_TeamController.EnemyGoal;
+	}
+
+	public virtual int GetStarPoint() {
+		return this.m_Data.starPoint;
 	}
 
 	#endregion

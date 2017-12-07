@@ -39,8 +39,6 @@ public class FSMSoccerAssistState : FSMBaseState {
 				this.m_Controller.interactiveRadius);
 		// UPDATE POSITION
 		this.m_Controller.SetTargetPosition (nearestPosition);
-//		this.m_Controller.UpdateCurrentNavAgent (soccerHaveBall.GetPosition());
-//		this.m_Controller.UpdateLookingBall ();
 	}
 
 	public override void ExitState()

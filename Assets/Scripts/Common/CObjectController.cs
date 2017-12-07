@@ -67,6 +67,14 @@ public class CObjectController : MonoBehaviour {
 		return base.Equals (other);
 	}
 
+	public virtual void SetData(CObjectData value) {
+	
+	}
+
+	public virtual CObjectData GetData() {
+		return null;
+	}
+
 	public virtual bool GetActive() {
 		return this.m_Active;
 	}
@@ -76,10 +84,14 @@ public class CObjectController : MonoBehaviour {
 	}
 
 	public virtual void SetPosition(Vector3 position) {
+		if (this.m_Transform == null)
+			return;
 		this.m_Transform.position = position;
 	}
 
 	public virtual Vector3 GetPosition() {
+		if (this.m_Transform == null)
+			return Vector3.zero;
 		return this.m_Transform.position;
 	}
 

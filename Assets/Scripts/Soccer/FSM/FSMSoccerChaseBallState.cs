@@ -16,19 +16,13 @@ public class FSMSoccerChaseBallState : FSMBaseState {
 	{
 		base.StartState ();
 		this.m_Controller.RunSpeed();
-		this.m_Controller.ballValue = Random.Range (1, 2f);
+		this.m_Controller.UpdateTackleBall ();
 	}
 
 	public override void UpdateState(float dt)
 	{
 		base.UpdateState (dt);
 		var ball = this.m_Controller.Team.Ball;
-//		var nearestPosition = this.m_Controller
-//			.startPoint
-//			.GetNearestPosition (
-//				this.m_Controller.GetPosition(),
-//				ball.GetPosition(), 
-//				1f);
 		this.m_Controller.SetTargetPosition (ball.GetPosition());
 		ball.UpdateBall (this.m_Controller);
 	}

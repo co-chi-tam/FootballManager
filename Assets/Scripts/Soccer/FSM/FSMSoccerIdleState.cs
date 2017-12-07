@@ -23,7 +23,6 @@ public class FSMSoccerIdleState : FSMBaseState {
 	public override void UpdateState(float dt)
 	{
 		base.UpdateState (dt);
-//		this.m_Controller.UpdateLookingBall ();
 	}
 
 	public override void ExitState()

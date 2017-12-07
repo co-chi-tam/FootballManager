@@ -26,7 +26,6 @@ public class FSMSoccerDefendState : FSMBaseState {
 			.startPoint
 			.GetNearestPoint (ball.GetPosition());
 		this.m_Controller.SetTargetPosition (nearestPoint.GetPosition());
-//		this.m_Controller.UpdateLookingBall ();
 	}
 
 	public override void ExitState()

@@ -4,7 +4,7 @@ using UnityEngine;
 using FSM;
 using SimpleSingleton;
 
-public class CTeamController : CMonoSingleton<CTeamController>, ITeamContext {
+public class CTeamController : CObjectController, ITeamContext {
 
 	#region Fields
 
@@ -13,6 +13,9 @@ public class CTeamController : CMonoSingleton<CTeamController>, ITeamContext {
 #if UNITY_EDITOR
 	[SerializeField]	protected string m_FSMStateName;
 #endif
+
+	[Header("Data")]
+	[SerializeField]	protected CTeamData m_Data;
 
 	[Header("Map")]
 	[SerializeField]	protected CBallController m_BallController;
@@ -40,6 +43,7 @@ public class CTeamController : CMonoSingleton<CTeamController>, ITeamContext {
 		get { return this.m_TeamName; }
 		set { this.m_TeamName = value; }
 	}
+
 	[SerializeField]	protected int m_StrikerCount = 5;
 	[SerializeField]	protected int m_DefenderCount = 5;
 	[SerializeField]	protected int m_GoalKeeperCount = 1;
@@ -73,6 +77,13 @@ public class CTeamController : CMonoSingleton<CTeamController>, ITeamContext {
 
 	#region MonoBehaviour Implementation
 
+	public override void Init ()
+	{
+		base.Init ();
+		// LOAD DATA
+		this.m_TeamName 			= this.m_Data.objectName;
+	}
+
 	protected override void Awake ()
 	{
 		base.Awake ();
@@ -91,8 +102,9 @@ public class CTeamController : CMonoSingleton<CTeamController>, ITeamContext {
 		this.m_FSMManager.LoadFSM (this.m_FSMTextAsset.text);
 	}
 
-	protected virtual void Update ()
+	protected override void Update ()
 	{
+		base.Update ();
 		this.m_FSMManager.UpdateState (Time.deltaTime);
 #if UNITY_EDITOR
 		this.m_FSMStateName = this.m_FSMManager.currentStateName;
@@ -113,6 +125,8 @@ public class CTeamController : CMonoSingleton<CTeamController>, ITeamContext {
 			soccer.SetPosition (startPosition);
 			soccer.Team = this;
 			soccer.SetActive (true);
+//			soccer.SetFSMAsset (this.m_StrikerFSMAsset);
+//			soccer.SetData(value);
 			soccer.Init ();
 			this.m_StrikerSoccers [i] = soccer;
 			this.AddMapObject (soccer);
@@ -126,6 +140,8 @@ public class CTeamController : CMonoSingleton<CTeamController>, ITeamContext {
 			soccer.SetPosition (startPosition);
 			soccer.Team = this;
 			soccer.SetActive (true);
+//			soccer.SetFSMAsset (this.m_DefenderFSMAsset);
+//			soccer.SetData(value);
 			soccer.Init ();
 			this.m_DefenderSoccers [i] = soccer;
 			this.AddMapObject (soccer);
@@ -139,6 +155,8 @@ public class CTeamController : CMonoSingleton<CTeamController>, ITeamContext {
 			soccer.SetPosition (startPosition);
 			soccer.Team = this;
 			soccer.SetActive (true);
+//			soccer.SetFSMAsset (this.m_GoalKeeperFSMAsset);
+//			soccer.SetData(value);
 			soccer.Init ();
 			this.m_GoalKeeperSoccers [i] = soccer;
 			this.AddMapObject (soccer);
@@ -150,6 +168,7 @@ public class CTeamController : CMonoSingleton<CTeamController>, ITeamContext {
 	public virtual CSoccerPlayerController SpawnSoccerPlayer(string path) {
 		var prefab = Resources.Load<CSoccerPlayerController> (path);
 		var soccerPlayer = Instantiate (prefab);
+		soccerPlayer.name = this.teamName + "-" + soccerPlayer.name;
 //		soccerPlayer.transform.SetParent (this.transform);
 		return soccerPlayer;
 	}
@@ -164,6 +183,10 @@ public class CTeamController : CMonoSingleton<CTeamController>, ITeamContext {
 		if (this.m_MiniMap == null)
 			return;
 		this.m_MiniMap.DisplayMiniMap ();
+	}
+
+	public virtual bool IsCorrectTeam(string name) {
+		return name.StartsWith (this.m_TeamName);
 	}
 
 	#endregion
@@ -210,6 +233,18 @@ public class CTeamController : CMonoSingleton<CTeamController>, ITeamContext {
 	#endregion
 
 	#region Getter && Setter 
+
+	public override void SetData (CObjectData value)
+	{
+		base.SetData (value);
+		this.m_Data = value as CTeamData;
+	}
+
+	public override CObjectData GetData ()
+	{
+		base.GetData ();
+		return this.m_Data as CObjectData;
+	}
 
 	public virtual CSoccerPlayerController GetSoccerNearest(CSoccerPlayerController value) {
 		var nearestLength = 9999f;

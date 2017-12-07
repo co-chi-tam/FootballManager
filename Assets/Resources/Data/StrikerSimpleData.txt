@@ -1,0 +1,9 @@
+﻿{
+	"playerName": "Ricado de Carudi",
+	"moveSpeed": 3.0,
+	"runSpeed": 6.0,
+	"potentialPoint": 2.0,
+	"tackleBallValue": 1.0,
+	"interactiveRadius": 7.0,
+	"timePerActive": 3.0,
+}

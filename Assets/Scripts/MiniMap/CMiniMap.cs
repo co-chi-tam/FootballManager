@@ -18,7 +18,7 @@ public class CMiniMap : MonoBehaviour {
 		this.m_MiniMapObjects = new List<GameObject> ();
 	}
 
-	protected virtual void Update() {
+	protected virtual void LateUpdate() {
 		this.UpdateMiniMap ();
 	}
 
@@ -44,6 +44,8 @@ public class CMiniMap : MonoBehaviour {
 	public virtual void UpdateMiniMap() {
 		for (int i = 0; i < this.m_MiniMapObjects.Count; i++) {
 			var mapObj = this.m_MiniMapObjects[i];
+			if (mapObj == null)
+				return;
 			var worldPosition = this.m_MapObjects [i].GetPosition ();
 			var mapPosition = new Vector3 (
 				(worldPosition.x + this.m_Center.x) * this.m_MapScale.x, 

@@ -2,24 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CCameraController : CObjectController {
+public class CCameraController : MonoBehaviour {
 
+	[Header("Control")]
 	[SerializeField]	protected CObjectController m_Follower;
+	[SerializeField]	protected Vector3 m_PositionOffset;
+	[SerializeField]	protected float m_Damping = 0.25f;
 
-	protected Vector3 m_PositionOffset;
+	protected Transform m_Transform;
 
-	protected override void Awake ()
+	protected virtual void Awake ()
 	{
-		base.Awake ();
-		this.m_PositionOffset = this.m_Transform.position;
+		this.m_Transform = this.transform;
 	}
 
-	protected override void Update ()
+	protected virtual void Update ()
 	{
-		base.Update ();
 		if (this.m_Follower != null) {
 			var target = this.m_PositionOffset + this.m_Follower.GetPosition ();
-			this.m_Transform.position = Vector3.Lerp(this.GetPosition(), target, 0.25f);
+			this.m_Transform.position = Vector3.Lerp(this.m_Transform.position, target, this.m_Damping);
 		}
 	}
 

@@ -183,15 +183,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bebf8fc15f40ee46a26481f4b05cba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Collider: {fileID: 0}
   m_FSMTextAsset: {fileID: 4900000, guid: abed768fee6210248bf7e57d0f66bb0f, type: 3}
   m_FSMStateName: 
   m_Model: {fileID: 1968480051283950}
+  m_Data: {fileID: 11400000, guid: a84acbd106a9de14597ace8f4cff21bd, type: 2}
   m_PlayerName: 
   m_MoveSpeed: 4
   m_RunSpeed: 8
-  m_BallValue: 5
-  m_InteractiveRadius: 20
-  m_TimeAction: 0.5
+  m_PotentialPoint: 2
+  m_TackleBallValue: 1
+  m_InteractiveRadius: 10
+  m_TimePerAction: 0.5
   m_StartPoint: {fileID: 0}
   m_CurrentPoint: {fileID: 0}
   m_TargetLayerMask:

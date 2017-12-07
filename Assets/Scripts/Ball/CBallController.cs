@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CBallController : CObjectController {
 
+	#region Fields
+
 	[Header("Data")]
 	[SerializeField]	protected GameObject m_BallObject;
 	[SerializeField]	protected float m_BallRadius = 2f;
@@ -43,6 +45,10 @@ public class CBallController : CObjectController {
 		}
 	}
 
+	#endregion
+
+	#region Implementation Monobehaviour
+
 	protected override void Awake ()
 	{
 		base.Awake ();
@@ -61,6 +67,10 @@ public class CBallController : CObjectController {
 		}
 	}
 
+	#endregion
+
+	#region Getter && Setter
+
 	public virtual void SetBallTo(IBallControlObject target) {
 		this.UpdateOwner (target);
 		this.m_BallObject.transform.localPosition = Vector3.zero; 
@@ -71,7 +81,7 @@ public class CBallController : CObjectController {
 	public virtual void UpdatePosition(Vector3 value) {
 		var direction = value - this.m_Transform.position;
 		if (direction.sqrMagnitude < this.m_BallRadius * this.m_BallRadius) {
-			this.m_Transform.position = Vector3.Lerp (this.m_Transform.position, value, 0.75f);
+			this.m_Transform.position = Vector3.Lerp (this.m_Transform.position, value, 0.65f);
 			this.m_BallObject.transform.localPosition = Vector3.zero; 
 		} else {
 			var speed = this.m_BallSpeed * Time.deltaTime;
@@ -80,9 +90,10 @@ public class CBallController : CObjectController {
 			// UPDATE BALL OBJECT
 			var curveValue = 1f - (direction.sqrMagnitude / this.m_MaxLength);
 			var currentPosition = this.m_BallObject.transform.localPosition; 
-			currentPosition.y = Mathf.Lerp (currentPosition.y, m_BallCurve.Evaluate (curveValue) * this.m_BallHeight, 0.65f);
-			currentPosition.y = Mathf.Clamp (currentPosition.y, 0f, this.m_BallHeight);
-			this.m_BallObject.transform.localPosition = currentPosition;
+			currentPosition.y = this.m_BallCurve.Evaluate (curveValue) * this.m_BallHeight;
+			if (currentPosition.sqrMagnitude > 0f) {
+				this.m_BallObject.transform.localPosition = currentPosition;
+			}
 		}
 	}
 
@@ -115,5 +126,7 @@ public class CBallController : CObjectController {
 		this.m_BallOwner = value;
 		this.m_BallOwner.SetBall (this);
 	}
+
+	#endregion
 
 }
