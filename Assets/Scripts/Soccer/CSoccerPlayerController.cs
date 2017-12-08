@@ -255,9 +255,7 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext, IBallC
 		);
 		var allyCount = 0;
 		var enememyCount = 0;
-		for (int i = 0; i < this.m_ChaseBallColliders.Length; i++) {
-			if (this.m_ChaseBallColliders [i] == null)
-				break;
+		for (int i = 0; i < colliderCount; i++) {
 			var objController = this.m_ChaseBallColliders [i].GetComponent<CSoccerPlayerController> ();
 			if (objController != null && objController != this) {
 				if (objController.Team.teamName == this.Team.teamName) {
@@ -287,23 +285,21 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext, IBallC
 		);
 		var allyCount = 0;
 		var enememyCount = 0;
-		var forward = this.m_Transform.TransformDirection (Vector3.forward);
-		for (int i = 0; i < this.m_PassBallColliders.Length; i++) {
-			if (this.m_PassBallColliders [i] == null)
-				break;
+		var forward = this.GetPosition() + this.m_Transform.TransformDirection (Vector3.forward);
+		for (int i = 0; i < colliderCount; i++) {
 			var objController = this.m_PassBallColliders [i].GetComponent<CSoccerPlayerController> ();
 			if (objController != null && objController != this) {
 				if (objController.Team.teamName == this.Team.teamName) {
 					var toOther = this.GetPosition() - objController.GetPosition();
-					var forwardValue = Vector3.Dot (forward, toOther) > 0;
-					allyCount = forwardValue ? allyCount + 1 : allyCount;
+					var dotValue = Vector3.Dot (forward, toOther) > 0;
+//					var angleValue = Vector3.Angle (toOther, forward) > 45f;
+					allyCount = dotValue ? allyCount + 1 : allyCount;
 				} else {
 					enememyCount += 1;
 				}
 			}
 		}
 		return colliderCount > 1 
-			&& enememyCount >= allyCount 
 			&& allyCount > 1
 			&& this.m_BallController != null
 			&& this.m_BallController.isBallActive;
@@ -365,15 +361,13 @@ public class CSoccerPlayerController : CObjectController, ISoccerContext, IBallC
 	private Collider[] m_BallValueColliders = new Collider[22];
 	public virtual float GetBallValue () {
 		var additionValue = 0;
-		Physics.OverlapSphereNonAlloc (
+		var colliderCount = Physics.OverlapSphereNonAlloc (
 			this.GetPosition (),
 			this.m_InteractiveRadius,
 			this.m_BallValueColliders,
 			this.m_TargetLayerMask
 		);
-		for (int i = 0; i < this.m_BallValueColliders.Length; i++) {
-			if (this.m_BallValueColliders [i] == null)
-				break;
+		for (int i = 0; i < colliderCount; i++) {
 			var objController = this.m_BallValueColliders [i].GetComponent<CSoccerPlayerController> ();
 			if (objController != null) {
 				if (objController.Team.teamName == this.Team.teamName) {

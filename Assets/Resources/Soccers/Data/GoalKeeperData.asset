@@ -16,6 +16,6 @@ MonoBehaviour:
   moveSpeed: 4
   runSpeed: 8
   potentialPoint: 2
-  tackleBallValue: 1
+  tackleBallValue: 5
   interactiveRadius: 10
   timePerActive: 0.5

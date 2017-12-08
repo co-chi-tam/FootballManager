@@ -34,9 +34,9 @@ public class FSMSoccerPassBallState : FSMBaseState {
 					&& objController.Team.teamName == this.m_Controller.Team.teamName;
 			}).OrderBy((a) => {
 				if (a.gameObject == this.m_Controller.gameObject)
-					return 9999;
-				var distance = goal.GetPosition() - a.transform.position;
-				return distance.sqrMagnitude;
+					return 9999f;
+				var distance = (goal.GetPosition() - a.transform.position).sqrMagnitude;
+				return distance;
 			}).ToArray();
 		// SET UP BALL
 		var ball = this.m_Controller.Team.Ball;
